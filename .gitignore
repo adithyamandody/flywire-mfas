@@ -5,3 +5,7 @@ runs/
 mfas_code/mfas
 mfas_code/relax
 mfas_code/solve
+mfas_code/solve2
+mfas_code/relax2
+mfas_code/springrank
+mfas_code/ils
