@@ -1,0 +1,7 @@
+mfas_data/
+data_hemibrain/
+runs/
+*.tmp
+mfas_code/mfas
+mfas_code/relax
+mfas_code/solve
