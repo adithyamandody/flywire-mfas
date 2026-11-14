@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <time.h>
+#include <math.h>
 static double now(void){struct timespec t;clock_gettime(CLOCK_MONOTONIC,&t);return t.tv_sec+1e-9*t.tv_nsec;}
 static void isort64(int64_t*a,int n){for(int i=1;i<n;i++){int64_t x=a[i];int j=i-1;while(j>=0&&a[j]>x){a[j+1]=a[j];j--;}a[j+1]=x;}}
 static void qs64(int64_t*a,int n){while(n>24){int64_t x=a[0],y=a[n/2],z=a[n-1],p;if(x>y){int64_t t=x;x=y;y=t;}if(y>z)y=z;if(x>y)y=x;p=y;
@@ -25,7 +26,7 @@ static inline uint64_t rdu64(char**p){uint64_t v=0;char*q=*p;while(*q>='0'&&*q<=
 static int32_t*src,*dst,*wt;static int64_t M=0,total=0;static int N;
 static int64_t*adj,*astart;static int32_t*alen;static int maxdeg=0;
 static int32_t*ord,*pos;static int64_t*sbuf;
-static int32_t*wq;static uint8_t*inq;static int qh=0,qt=0,qn=0;      /* ring worklist */
+static int32_t*wq;static uint8_t*inq,*tabu;static int qh=0,qt=0,qn=0;      /* ring worklist */
 static int32_t*lv,*lf,*lt;static int nlog=0,logcap=0;                 /* undo log */
 static uint64_t rs;static inline uint64_t rnd(void){rs^=rs<<13;rs^=rs>>7;rs^=rs<<17;return rs;}
 
@@ -55,7 +56,7 @@ static int64_t best_ins(int32_t v,int32_t*tgt){
   acc=0;for(int k=lo-1;k>=0;k--){acc-=(int32_t)(sbuf[k]&0xffffffffLL);if(acc>best){best=acc;*tgt=(int32_t)(sbuf[k]>>32);}}
   return best;}
 static int64_t drain(int logged){int64_t g=0;
-  while(qn){int32_t v=wq[qh];qh=(qh+1)%N;qn--;inq[v]=0;int32_t t;int64_t b=best_ins(v,&t);
+  while(qn){int32_t v=wq[qh];qh=(qh+1)%N;qn--;inq[v]=0;if(tabu[v])continue;int32_t t;int64_t b=best_ins(v,&t);
     if(b>0){if(logged)move_logged(v,t);else shift_to(v,t);g+=b;push_nbrs(v);}}
   return g;}
 static void dump(const char*path,int64_t sc){char tmp[1024];snprintf(tmp,sizeof tmp,"%s.tmp",path);
@@ -80,30 +81,37 @@ int main(int argc,char**argv){
   for(int v=0;v<N;v++){int64_t s=astart[v];int n=(int)(astart[v+1]-s);qs64(adj+s,n);int o=0;
     for(int k=0;k<n;){int32_t u=(int32_t)(adj[s+k]>>32);int64_t sum=0;while(k<n&&(int32_t)(adj[s+k]>>32)==u){sum+=(int32_t)(adj[s+k]&0xffffffffLL);k++;}
       if(sum)adj[s+o++]=((int64_t)u<<32)|(uint32_t)(int32_t)sum;}alen[v]=o;if(o>maxdeg)maxdeg=o;}
-  ord=malloc(N*4);pos=malloc(N*4);sbuf=malloc((size_t)(maxdeg+2)*8);wq=malloc(N*4);inq=calloc(N,1);
+  ord=malloc(N*4);pos=malloc(N*4);sbuf=malloc((size_t)(maxdeg+2)*8);wq=malloc(N*4);inq=calloc(N,1);tabu=calloc(N,1);
   size_t ol;char*ob=slurp(argv[5],&ol);char*q=ob;while(*q&&*q!='\n')q++;q++;
   while(*q){if(*q<'0'||*q>'9'){q++;continue;}uint64_t id=rdu64(&q);q++;uint64_t o=rdu64(&q);while(*q&&*q!='\n')q++;if(*q)q++;ord[o]=lookup(id);}
   free(ob);for(int i=0;i<N;i++)pos[ord[i]]=i;
   int64_t cur=exact_score();fprintf(stderr,"start %lld (%.4f%%)\n",(long long)cur,100.0*cur/total);
   for(int i=0;i<N;i++)push(ord[i]);cur+=drain(0);
   fprintf(stderr,"local opt %lld (%.4f%%) %.1fs\n",(long long)cur,100.0*cur/total,now()-t0);
-  int64_t dumped=-1;double lastd=0;long it=0,acc_eq=0,acc_up=0;int64_t wgain[NW]={0};long wwin[NW]={0},wtry[NW]={0};
+  double T=argc>6?atof(argv[6]):0.0;int Kmax=argc>7?atoi(argv[7]):8;if(Kmax<1)Kmax=1;int TABU=argc>8?atoi(argv[8]):1;int32_t kicked[64];
+  int32_t*bestord=malloc(N*4),*tpos=malloc(N*4);memcpy(bestord,ord,(size_t)N*4);
+  int64_t best=cur,dumped=-1;double lastd=0;long it=0,up=0,dn=0,sinceb=0,resets=0;
   while(now()-t0<budget){
-    it++;nlog=0;int wi=(int)(rnd()%NW);int W=WIN[wi];int K=1+(int)(rnd()%8);wtry[wi]++;
-    int64_t d=0;
+    it++;nlog=0;int wi=(int)(rnd()%NW);int W=WIN[wi];int K=1+(int)(rnd()%(uint64_t)Kmax);if(K>64)K=64;int64_t d=0;int nk=0;
     for(int k=0;k<K;k++){int32_t v=(int32_t)(rnd()%(uint64_t)N);int32_t pv=pos[v],qq;
       if(W==0)qq=(int32_t)(rnd()%(uint64_t)N);else{qq=pv+(int32_t)(rnd()%(uint64_t)(2*W+1))-W;if(qq<0)qq=0;if(qq>=N)qq=N-1;}
-      if(qq==pv)continue;d+=gain_to(v,qq);move_logged(v,qq);push(v);push_nbrs(v);}
+      if(qq==pv)continue;d+=gain_to(v,qq);move_logged(v,qq);push(v);push_nbrs(v);if(TABU&&!tabu[v]){tabu[v]=1;kicked[nk++]=v;}}
     d+=drain(1);
-    if(d<0)undo_all();
-    else{if(d>0){cur+=d;acc_up++;wgain[wi]+=d;wwin[wi]++;}else acc_eq++;nlog=0;}
-    if((it&1023)==0&&cur>dumped&&now()-lastd>60){int64_t chk=exact_score();
-      if(chk!=cur){fprintf(stderr,"!! mismatch %lld vs %lld\n",(long long)cur,(long long)chk);cur=chk;}
-      dump(argv[2],cur);dumped=cur;lastd=now();
-      fprintf(stderr,"it %ld  %.0f it/s  improving=%ld plateau=%ld  best %lld (%.4f%%)  %.0fs\n",it,it/(now()-t0),acc_up,acc_eq,(long long)cur,100.0*cur/total,now()-t0);}
+    if(TABU){for(int i=0;i<nk;i++){tabu[kicked[i]]=0;push(kicked[i]);}d+=drain(1);}
+    if(d<0){if(T>0&&(double)(rnd()>>11)/9007199254740992.0<exp((double)d/T)){cur+=d;dn++;nlog=0;}else undo_all();}
+    else{cur+=d;if(d>0)up++;nlog=0;}
+    if(cur>best){best=cur;memcpy(bestord,ord,(size_t)N*4);sinceb=0;}else sinceb++;
+    if(T>0&&sinceb>40000){memcpy(ord,bestord,(size_t)N*4);for(int i=0;i<N;i++)pos[ord[i]]=i;cur=best;sinceb=0;resets++;}
+    if((it&1023)==0&&best>dumped&&now()-lastd>60){
+      for(int i=0;i<N;i++)tpos[bestord[i]]=i;int64_t chk=0;for(int64_t e=0;e<M;e++)if(tpos[src[e]]<tpos[dst[e]])chk+=wt[e];
+      if(chk!=best){fprintf(stderr,"!! mismatch %lld vs %lld\n",(long long)best,(long long)chk);best=chk;}
+      memcpy(tpos,ord,(size_t)N*4);memcpy(ord,bestord,(size_t)N*4);dump(argv[2],best);memcpy(ord,tpos,(size_t)N*4);
+      dumped=best;lastd=now();
+      fprintf(stderr,"it %ld %.0f it/s up=%ld down=%ld resets=%ld cur=%lld best %lld (%.4f%%) %.0fs\n",it,it/(now()-t0),up,dn,resets,(long long)cur,(long long)best,100.0*best/total,now()-t0);}
   }
-  int64_t chk=exact_score();if(chk!=cur)fprintf(stderr,"!! final mismatch %lld vs %lld\n",(long long)cur,(long long)chk);
-  cur=chk;dump(argv[2],cur);
-  for(int i=0;i<NW;i++)fprintf(stderr,"window %6d: tries %ld wins %ld gain %lld\n",WIN[i],wtry[i],wwin[i],(long long)wgain[i]);
-  fprintf(stderr,"DONE %lld (%.4f%%)  iterations %ld\n",(long long)cur,100.0*cur/total,it);
+  for(int i=0;i<N;i++)tpos[bestord[i]]=i;int64_t chk=0;for(int64_t e=0;e<M;e++)if(tpos[src[e]]<tpos[dst[e]])chk+=wt[e];
+  if(chk!=best)fprintf(stderr,"!! final mismatch %lld vs %lld\n",(long long)best,(long long)chk);
+  memcpy(ord,bestord,(size_t)N*4);dump(argv[2],chk);
+  fprintf(stderr,"tabu=%d T=%.1f Kmax=%d  up=%ld down=%ld resets=%ld\n",TABU,T,Kmax,up,dn,resets);
+  fprintf(stderr,"DONE %lld (%.4f%%)  iterations %ld\n",(long long)chk,100.0*chk/total,it);
   return 0;}

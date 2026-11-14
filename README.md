@@ -14,7 +14,9 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | Sifting local search alone | 34,943,313 | 83.37% |
 | Relaxation + sifting | 35,155,515 | 83.88% |
 | + slow ILS, 12 cores, 50 min | 35,326,977 | 84.29% |
-| **This repo, best so far** | **35329760** | **84.295%** |
+| + fast worklist ILS, 12 islands | 35,340,935 | 84.32% |
+| + tabu after kick | 35,357,901 | 84.36% |
+| **This repo, best so far** | **35357901** | **84.362%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
@@ -38,8 +40,16 @@ at a tiny fraction of the cost. Every move is logged; a losing iteration is
 undone exactly. ~330 iterations/s on one core vs ~0.4/s for full re-sweeps.
 Head-to-head over 4 minutes from the same converged start: +5,248 vs +1,843.
 
-**Island model** (`overnight2.sh`) — 12 ILS islands from the global best in
-30-minute rounds; each round restarts every island from the best found.
+**Tabu after kick** (`ilst.c`, now `ils.c`) — the kicked neurons are frozen
+while the repair cascade runs, then released for a final repair. Without
+this, nearly every iteration ended at exactly zero: the repair simply moved
+the kicked neuron back to its old position, which was its best position
+before the kick. Freezing forces the neighbours to adapt to the new
+arrangement. Same seed, same 5 minutes: +12,698 vs +2,090 — 6x the rate,
+with fewer iterations (28k vs 100k) each doing real work.
+
+**Island model** (`overnight3.sh`) — 12 tabu-ILS islands from the global best in
+15-minute rounds; each round restarts every island from the best found.
 
 ## What did not work (measured, not guessed)
 
@@ -53,6 +63,14 @@ Head-to-head over 4 minutes from the same converged start: +5,248 vs +1,843.
   Good local optima here are further apart than a "big valley" assumes.
 - **Loss shape in the relaxation.** Clamped-linear, logistic and arctan
   losses all land in basins of the same quality (83.7–84.0% after sifting).
+- **Targeted backward-edge kicks** (`ilsb.c`) — force one end of a heavy
+  backward edge past the other. 5 min from the same seed: +5,657 vs +8,008
+  for random kicks; a 50/50 mix was in between.
+- **Simulated annealing** (`ilssa.c`) at T = 3 and 15: indistinguishable from
+  T = 0. Only 21–38 losing iterations in ~100k were small enough to accept;
+  kicks that lose, lose big.
+- **Longer relaxation** — 30k steps (5x) with or without periodic re-ranking
+  lands in the same basins as 6k steps.
 - **SpringRank initialisation** (`springrank.c`, least-squares potentials
   via preconditioned CG). 77.8% raw, 83.76% after sifting — below a random
   relaxation start.
