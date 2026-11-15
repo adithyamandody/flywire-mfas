@@ -18,7 +18,7 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + tabu after kick | 35,357,901 | 84.36% |
 | + 12 islands, 45 min | 35,402,138 | 84.47% |
 | + merged strict islands | 35,413,529 | 84.49% |
-| **This repo, best so far** | **35413657** | **84.494%** |
+| **This repo, best so far** | **35446649** | **84.573%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
