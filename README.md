@@ -16,7 +16,9 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + slow ILS, 12 cores, 50 min | 35,326,977 | 84.29% |
 | + fast worklist ILS, 12 islands | 35,340,935 | 84.32% |
 | + tabu after kick | 35,357,901 | 84.36% |
-| **This repo, best so far** | **35357901** | **84.362%** |
+| + 12 islands, 45 min | 35,402,138 | 84.47% |
+| + merged strict islands | 35,413,529 | 84.49% |
+| **This repo, best so far** | **35413657** | **84.494%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
@@ -48,8 +50,27 @@ before the kick. Freezing forces the neighbours to adapt to the new
 arrangement. Same seed, same 5 minutes: +12,698 vs +2,090 — 6x the rate,
 with fewer iterations (28k vs 100k) each doing real work.
 
-**Island model** (`overnight3.sh`) — 12 tabu-ILS islands from the global best in
-15-minute rounds; each round restarts every island from the best found.
+**Merged strict islands** (`overnight4.sh`, `merge.c`) — 12 tabu-ILS islands
+in 4-minute rounds. Keeping only the best island wasted ~90% of the compute:
+islands gained +21k–26k each, the best only 14% above the mean. Islands that
+accept *strictly* improving iterations (`ilsk.c`, strict mode) leave small
+diffs from the seed — the neurons outside the longest common subsequence,
+found by LIS in O(N log N). `merge` transplants each island's moved neurons
+into the best island next to the same predecessor, scores every move
+exactly, repairs, and keeps the transplant only if the total rises (falling
+back to chunks of 20 if the whole island is rejected). It never does worse
+than the best island. At 12 islands: merged result 2.9x and 1.8x the best
+single island in the first two rounds.
+
+Plateau islands (accepting zero-gain iterations) cannot be merged this way:
+they drift across ~113k of 136k neurons, so their diff is the whole order.
+
+## Upper bound
+
+519,895 reciprocal neuron pairs force 2,815,303 of weight backward in any
+ordering, so no solution can exceed **39,096,838 (93.28%)** (`bound2.py`).
+The bound is loose — longer cycles force more — so it does not show how
+close the leaderboard is to optimal.
 
 ## What did not work (measured, not guessed)
 
@@ -63,6 +84,10 @@ with fewer iterations (28k vs 100k) each doing real work.
   Good local optima here are further apart than a "big valley" assumes.
 - **Loss shape in the relaxation.** Clamped-linear, logistic and arctan
   losses all land in basins of the same quality (83.7–84.0% after sifting).
+- **Smart kick targets** — sending kicked neurons to one of their 5 best
+  alternative positions instead of a random one: +4,692 vs +9,998.
+- **Kick-node locking** (each neuron moves at most once per repair) and
+  kick sizes 5/16/32 — within noise of, or worse than, kick size ≤ 8.
 - **Targeted backward-edge kicks** (`ilsb.c`) — force one end of a heavy
   backward edge past the other. 5 min from the same seed: +5,657 vs +8,008
   for random kicks; a 50/50 mix was in between.
