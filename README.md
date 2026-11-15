@@ -100,6 +100,15 @@ close the leaderboard is to optimal.
   via preconditioned CG). 77.8% raw, 83.76% after sifting — below a random
   relaxation start.
 
+## What the leaders' posted files tell us
+
+The top five have published nothing, but their submission files are posted.
+Comparing #1 with ours (analysis only; we never seed from them): #1 and #2 are
+near-identical orderings, while ours differs globally. 4.2% of synapse weight
+points the other way, concentrated on hub neurons, and their file still yields
+to our ILS quickly. The gap is the global layout, not polish. Details and next
+ideas: [LEADERBOARD_ANALYSIS.md](LEADERBOARD_ANALYSIS.md).
+
 ## Prior work
 
 - Vahidi & Koutis, *Feedforward Ordering in Neural Connectomes via Feedback
