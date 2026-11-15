@@ -7,7 +7,7 @@ for f in runs/*.log; do
   s=$(grep -o 'checkpoint [0-9]*' "$f" 2>/dev/null | tail -1 | awk '{print $2}')
   [ -n "$s" ] && [ "$s" -gt "$best" ] && { best=$s; who=$(basename "$f" .log); }
 done
-alive=$(pgrep -f 'mfas_code/(solve|ils|ilsk2|ilsh|merge) ' | wc -l | tr -d ' ')
+alive=$(pgrep -f 'mfas_code/(solve|ils|ilsk2|ilsh|ilstopo|merge) ' | wc -l | tr -d ' ')
 echo "search processes : $alive"
 echo "best score       : $best   ($(echo "scale=3; 100*$best/$TOTAL" | bc)%)   [$who]"
 echo "leaderboard top  : $TOP   (84.808%)"

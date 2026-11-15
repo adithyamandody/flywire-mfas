@@ -22,7 +22,8 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + hub moves, one core, 5 min | 35,454,360 | 84.59% |
 | + hub-move island search (47 rounds) | 35,499,190 | 84.70% |
 | + TopoShuffle kicks, one core, 10 min | 35,505,143 | 84.71% |
-| **This repo, best so far** | **35505143** | **84.713%** |
+| + TopoShuffle island search (14 rounds) | 35,512,621 | 84.73% |
+| **This repo, best so far** | **35512621** | **84.731%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
