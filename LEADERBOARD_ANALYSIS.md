@@ -60,11 +60,12 @@ after that refines the same basin. The leaders' basin differs mainly in where
 the hub neurons sit and how everything else interleaves around them. A single
 hub can't be moved on its own, because thousands of partners pin it in place.
 
-Ideas this suggests, none tested yet:
+Ideas this suggests:
 
-1. **Hub moves**: move a high-degree neuron far, freeze it there, let the
-   worklist repair rearrange its neighbourhood, then release it; keep if
-   better.
+1. **Hub moves** (tested 15 Nov, **works**): a hub plus its strongest
+   wrong-side partners, moved together, gained up to +7,711 per core in 5
+   minutes against +16 for the old search. A hub moved alone gained nothing.
+   See the README.
 2. **Better starting layouts**: several relaxation restarts that differ in
    how hubs are treated, judged after a short ILS, not by raw score.
 3. **TopoShuffle** (from the Rocket-Crane paper): a random re-sort that keeps

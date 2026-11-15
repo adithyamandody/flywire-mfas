@@ -18,7 +18,9 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + tabu after kick | 35,357,901 | 84.36% |
 | + 12 islands, 45 min | 35,402,138 | 84.47% |
 | + merged strict islands | 35,413,529 | 84.49% |
-| **This repo, best so far** | **35446649** | **84.573%** |
+| + 12 islands overnight (88 rounds) | 35,446,649 | 84.57% |
+| + hub moves, one core, 5 min | 35,454,360 | 84.59% |
+| **This repo, best so far** | **35454360** | **84.592%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
@@ -64,6 +66,27 @@ single island in the first two rounds.
 
 Plateau islands (accepting zero-gain iterations) cannot be merged this way:
 they drift across ~113k of 136k neurons, so their diff is the whole order.
+
+**Hub moves** (`ilsh.c`) — found by comparing with the leader's posted file
+(see [LEADERBOARD_ANALYSIS.md](LEADERBOARD_ANALYSIS.md)): the layouts differ
+most around hub neurons, which single moves can't shift because thousands of
+partners pin them. A hub move picks a top-4% neuron by degree, moves it to one
+of its best alternative positions (or a random window), and its HK strongest
+partners left on the wrong side follow it, placed right next to it.
+Everything moved is frozen while the rest repairs, then released.
+
+5-minute head-to-head from the same start (35,446,649), 3 seeds each:
+
+| kick | gain per core |
+|---|---|
+| current search (random kicks only) | +14, +23, +12 |
+| hub alone | +14, +8, +11 |
+| hub + 16 partners | +669, +18, +395 |
+| hub + 64 partners | **+7,711**, +547, +487 |
+
+The hub has to move together with its neighbourhood; moving it alone does
+nothing. Best-alternative targets beat random windows. Once hub moves open a
+new region, ordinary random kicks start winning again there too.
 
 ## Upper bound
 
