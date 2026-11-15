@@ -20,7 +20,7 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + merged strict islands | 35,413,529 | 84.49% |
 | + 12 islands overnight (88 rounds) | 35,446,649 | 84.57% |
 | + hub moves, one core, 5 min | 35,454,360 | 84.59% |
-| **This repo, best so far** | **35454360** | **84.592%** |
+| **This repo, best so far** | **35499190** | **84.699%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
