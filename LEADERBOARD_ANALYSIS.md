@@ -68,5 +68,7 @@ Ideas this suggests:
    See the README.
 2. **Better starting layouts**: several relaxation restarts that differ in
    how hubs are treated, judged after a short ILS, not by raw score.
-3. **TopoShuffle** (from the Rocket-Crane paper): a random re-sort that keeps
-   every forward edge forward, used as a kick that never lowers the score.
+3. **TopoShuffle** (from the Rocket-Crane paper; tested 15 Nov, **works**):
+   a random re-sort that keeps every forward edge forward, used as a kick
+   that never lowers the score. After hub moves had stalled (+13 per core in
+   10 minutes), whole-order shuffles gained +5,953. See the README.

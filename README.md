@@ -20,7 +20,9 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + merged strict islands | 35,413,529 | 84.49% |
 | + 12 islands overnight (88 rounds) | 35,446,649 | 84.57% |
 | + hub moves, one core, 5 min | 35,454,360 | 84.59% |
-| **This repo, best so far** | **35499190** | **84.699%** |
+| + hub-move island search (47 rounds) | 35,499,190 | 84.70% |
+| + TopoShuffle kicks, one core, 10 min | 35,505,143 | 84.71% |
+| **This repo, best so far** | **35505143** | **84.713%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
@@ -87,6 +89,34 @@ Everything moved is frozen while the rest repairs, then released.
 The hub has to move together with its neighbourhood; moving it alone does
 nothing. Best-alternative targets beat random windows. Once hub moves open a
 new region, ordinary random kicks start winning again there too.
+
+**TopoShuffle kicks** (`ilstopo.c`, idea from Bader et al. 2025,
+"Rocket-Crane"): re-sort a stretch of the order, or all of it, along a random
+topological order of the pairs it currently gets right. Every right pair stays
+right, so the shuffle alone never loses weight and sometimes fixes a wrong
+pair for free. The usual repair then runs on everything that moved. Each
+shuffle lands on a different order with the same or better score, where
+single moves that were blocked before can win again.
+
+10-minute head-to-head from the end of the hub-move search (35,499,190),
+where hub moves alone had stalled, 2 seeds each, hub moves on in every run
+(`topo_test.sh`):
+
+| kick mix | gain per core |
+|---|---|
+| hub moves only | +13, +2 |
+| + 25% shuffles of a 2,000-neuron window | +1,475, +1,397 |
+| + same, also keeping equal-score results | +1,697, +1,650 |
+| + 25% shuffles of a 20,000 window, mild randomness | +1,144, +1,172 |
+| + 25% shuffles of a 20,000 window | +4,584, +5,317 |
+| + 2% shuffles of the whole order | **+5,953**, +5,899 |
+
+Bigger and more random shuffles do better: 175 of 178 whole-order shuffles
+won. Most of the gain comes early (+4,215 of +5,953 in the first 2.3
+minutes), so the shuffles release a batch of improvements rather than set a
+new steady rate; by the end they still gained about +3 per second per core.
+Islands that shuffle the whole order can't be merged (their diff is the whole
+order), so take the best island instead.
 
 ## Upper bound
 
