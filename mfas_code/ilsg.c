@@ -22,7 +22,9 @@
    merge can keep more of them. The TopoShuffle window is then the region
    (widened to 10,000 neurons around it if narrower).
    usage: ilsg ... TOPOP TOPOL TOPOJ TOPOACC GP GK GMODE GHUB SP SK SMODE SHUB
-               IMP IML IMMODE REGLO REGHI
+               IMP IML IMMODE REGLO REGHI TOPOG
+   TOPOG > 0: TopoShuffle keys are pulled TOPOG of the way toward the mean
+   position of the partners a neuron is on the wrong side of (guided shuffle).
    (ilstopo header follows)
    ilstopo: ilsh + TopoShuffle kicks. With probability TOPOP an iteration
    re-sorts a window of TOPOL positions (0 = the whole order) along a random
@@ -78,7 +80,22 @@ static int32_t*lv,*lf,*lt;static int nlog=0,logcap=0;                 /* undo lo
 static uint64_t rs;static inline uint64_t rnd(void){rs^=rs<<13;rs^=rs>>7;rs^=rs<<17;return rs;}
 
 static int64_t exact_score(void){int64_t f=0;for(int64_t e=0;e<M;e++)if(pos[src[e]]<pos[dst[e]])f+=wt[e];return f;}
-static inline void shift_to(int32_t v,int32_t to){int32_t pv=pos[v];
+static uint8_t*adirty;static int64_t*sbuf2;static int bicheck=0;static long bimis=0;
+/* every neuron's partner list is kept sorted by current position (lazily: a
+   'dirty' list is re-sorted the next time it is read). A move shifts the
+   positions of the neurons in between by one, which keeps their relative order,
+   so only the moved neuron's own entry needs relocating in each partner list. */
+static void sort_list(int32_t v){int n=alen[v];int64_t s=astart[v];
+  for(int k=0;k<n;k++)sbuf2[k]=((int64_t)pos[(int32_t)(adj[s+k]>>32)]<<32)|(uint32_t)k;
+  qs64(sbuf2,n);for(int k=0;k<n;k++)sbuf2[k]=adj[s+(uint32_t)(sbuf2[k]&0xffffffffLL)];memcpy(adj+s,sbuf2,(size_t)n*8);adirty[v]=0;}
+static inline void mark_nbhd(int32_t v){adirty[v]=1;int64_t s=astart[v];for(int k=0;k<alen[v];k++)adirty[(int32_t)(adj[s+k]>>32)]=1;}
+static inline int lb_pos(int64_t s,int n,int32_t p){int lo=0,hi=n;while(lo<hi){int m=(lo+hi)>>1;if(pos[(int32_t)(adj[s+m]>>32)]<p)lo=m+1;else hi=m;}return lo;}
+static inline void relocate(int32_t v,int32_t to){int32_t pv=pos[v];int64_t sv=astart[v];
+  for(int k=0;k<alen[v];k++){int32_t u=(int32_t)(adj[sv+k]>>32);if(adirty[u])continue;int64_t s=astart[u];int n=alen[u];
+    int i=lb_pos(s,n,pv);int64_t e=adj[s+i];
+    if(to>pv){int j=lb_pos(s,n,to+1)-1;if(j>i){memmove(adj+s+i,adj+s+i+1,(size_t)(j-i)*8);adj[s+j]=e;}}
+    else{int j=lb_pos(s,n,to);if(j<i){memmove(adj+s+j+1,adj+s+j,(size_t)(i-j)*8);adj[s+j]=e;}}}}
+static inline void shift_to(int32_t v,int32_t to){if(to!=pos[v])relocate(v,to);int32_t pv=pos[v];
   if(to>pv){memmove(ord+pv,ord+pv+1,(size_t)(to-pv)*4);for(int i=pv;i<to;i++)pos[ord[i]]=i;}
   else if(to<pv){memmove(ord+to+1,ord+to,(size_t)(pv-to)*4);for(int i=to+1;i<=pv;i++)pos[ord[i]]=i;}
   ord[to]=v;pos[v]=to;}
@@ -94,7 +111,15 @@ static int64_t gain_to(int32_t v,int32_t q){int32_t p=pos[v];int64_t s=astart[v]
   else if(q<p){for(int k=0;k<alen[v];k++){int32_t u=(int32_t)(adj[s+k]>>32);int32_t pu=pos[u];if(pu>=q&&pu<p)g-=(int32_t)(adj[s+k]&0xffffffffLL);}}
   return g;}
 /* best insertion for v: returns gain, writes target */
+static int64_t best_ins_old(int32_t v,int32_t*tgt);
 static int64_t best_ins(int32_t v,int32_t*tgt){
+  int n=alen[v];*tgt=pos[v];if(!n)return 0;int64_t s=astart[v];int32_t pv=pos[v];if(adirty[v])sort_list(v);
+  int lo=lb_pos(s,n,pv);int64_t best=0,acc=0;
+  for(int k=lo;k<n;k++){acc+=(int32_t)(adj[s+k]&0xffffffffLL);if(acc>best){best=acc;*tgt=pos[(int32_t)(adj[s+k]>>32)];}}
+  acc=0;for(int k=lo-1;k>=0;k--){acc-=(int32_t)(adj[s+k]&0xffffffffLL);if(acc>best){best=acc;*tgt=pos[(int32_t)(adj[s+k]>>32)];}}
+  if(bicheck){int32_t t2;int64_t b2=best_ins_old(v,&t2);if(b2!=best||(best>0&&t2!=*tgt))bimis++;}
+  return best;}
+static int64_t best_ins_old(int32_t v,int32_t*tgt){
   int n=alen[v];*tgt=pos[v];if(!n)return 0;int64_t s=astart[v];int32_t pv=pos[v];
   for(int k=0;k<n;k++){int32_t u=(int32_t)(adj[s+k]>>32);sbuf[k]=((int64_t)pos[u]<<32)|(uint32_t)(int32_t)(adj[s+k]&0xffffffffLL);}
   qs64(sbuf,n);int lo=0,hi=n;while(lo<hi){int m=(lo+hi)>>1;if((int32_t)(sbuf[m]>>32)<pv)lo=m+1;else hi=m;}
@@ -130,22 +155,30 @@ static int64_t win_sum(int a,int L){int64_t S=0;int b=a+L;
   return S;}
 /* re-sort [a,a+L) along a random topological order of its right pairs;
    returns the exact score change (always >= 0) */
+static double TOPOG=0.0;static int32_t*tkey;
+/* guided keys: pull each neuron toward the weighted mean position of the partners it is on the wrong side of */
+static void guided_keys(int a,int L,int J){int b=a+L;
+  for(int i=a;i<b;i++){int32_t v=ord[i];double sw=0,swp=0;int64_t s=astart[v];
+    for(int k=0;k<alen[v];k++){int32_t u=(int32_t)(adj[s+k]>>32);int32_t w=(int32_t)(adj[s+k]&0xffffffffLL);int32_t pu=pos[u];
+      if(w>0&&pu>i){sw+=w;swp+=(double)w*(pu+0.5);}else if(w<0&&pu<i){sw-=w;swp-=(double)w*(pu-0.5);}}
+    double t=sw>0?swp/sw:i;double key=(i-a)+TOPOG*(t-i)+(double)(rnd()%(uint64_t)(J+1));
+    if(key<-L)key=-L;if(key>2.0*L)key=2.0*L;tkey[v]=(int32_t)(key+L);}}
 static int64_t topo_shuffle(int a,int L,int J){
-  int b=a+L;int64_t S0=win_sum(a,L);ta=a;tL=L;
+  int b=a+L;int64_t S0=win_sum(a,L);ta=a;tL=L;if(TOPOG>0)guided_keys(a,L,J);
   for(int i=a;i<b;i++){int32_t v=ord[i];tseg[i-a]=v;int c=0;int64_t s=astart[v];
     for(int k=0;k<alen[v];k++){int32_t pu=pos[(int32_t)(adj[s+k]>>32)];if(pu>=a&&pu<i&&(int32_t)(adj[s+k]&0xffffffffLL)>0)c++;}
     tdeg[v]=c;}
-  thn=0;for(int i=a;i<b;i++){int32_t v=ord[i];if(!tdeg[v])hpush(((int64_t)((i-a)+(int)(rnd()%(uint64_t)(J+1)))<<32)|(uint32_t)v);}
+  thn=0;for(int i=a;i<b;i++){int32_t v=ord[i];if(!tdeg[v])hpush(((int64_t)(TOPOG>0?tkey[v]:(i-a)+(int)(rnd()%(uint64_t)(J+1)))<<32)|(uint32_t)v);}
   int no=0;
   while(thn){int32_t v=(int32_t)(hpop()&0xffffffffLL);tnew[no++]=v;int32_t pv=pos[v];int64_t s=astart[v];
     for(int k=0;k<alen[v];k++){int32_t u=(int32_t)(adj[s+k]>>32);int32_t pu=pos[u];
-      if(pu>pv&&pu<b&&(int32_t)(adj[s+k]&0xffffffffLL)<0&&--tdeg[u]==0)hpush(((int64_t)((pu-a)+(int)(rnd()%(uint64_t)(J+1)))<<32)|(uint32_t)u);}}
+      if(pu>pv&&pu<b&&(int32_t)(adj[s+k]&0xffffffffLL)<0&&--tdeg[u]==0)hpush(((int64_t)(TOPOG>0?tkey[u]:(pu-a)+(int)(rnd()%(uint64_t)(J+1)))<<32)|(uint32_t)u);}}
   if(no!=L){fprintf(stderr,"!! topo: sorted %d of %d\n",no,L);exit(2);}
-  for(int i=0;i<L;i++){ord[a+i]=tnew[i];pos[tnew[i]]=a+i;}
+  for(int i=0;i<L;i++){ord[a+i]=tnew[i];pos[tnew[i]]=a+i;}for(int i=0;i<L;i++)mark_nbhd(tnew[i]);
   int64_t dS=win_sum(a,L)-S0;if(dS&1)fprintf(stderr,"!! topo: odd change %lld\n",(long long)dS);
   if(dS<0)fprintf(stderr,"!! topo: shuffle lost %lld\n",(long long)dS);
   return dS/2;}
-static void topo_restore(void){for(int i=0;i<tL;i++){ord[ta+i]=tseg[i];pos[tseg[i]]=ta+i;}}
+static void topo_restore(void){for(int i=0;i<tL;i++){ord[ta+i]=tseg[i];pos[tseg[i]]=ta+i;}for(int i=0;i<tL;i++)mark_nbhd(tseg[i]);}
 
 /* ---- group moves ---- */
 static int32_t*gmem;static uint8_t*ing;static int64_t*gext;static long gdirect=0;
@@ -201,7 +234,7 @@ static int64_t slot_dp(int32_t v,int k,int SMODE,int*np){
     for(int i=0;i<n;i++){if(mk>>i&1)continue;int64_t val=sf[mk]+sext[i][c]+sinw[((size_t)i<<SKMAX)+mk];int nm=mk|1<<i;if(val>sf[nm]){sf[nm]=val;sbv[nm]=(int8_t)i;}}}
   int64_t g=0;if(sf[full]<cur)sdless++;else if(sf[full]==cur)sdeq++;
   if(sf[full]>cur){int mk=full;int32_t nn[SKMAX];for(int c=n-1;c>=0;c--){int i=sbv[mk];nn[c]=snode[i];mk^=1<<i;}
-    for(int c=0;c<n;c++){ord[sslot[c]]=nn[c];pos[nn[c]]=sslot[c];}g=(sf[full]-cur)/2;sdwin++;sdgain+=g;}
+    for(int c=0;c<n;c++){ord[sslot[c]]=nn[c];pos[nn[c]]=sslot[c];}for(int c=0;c<n;c++)mark_nbhd(nn[c]);g=(sf[full]-cur)/2;sdwin++;sdgain+=g;}
   for(int i=0;i<n;i++)sid[snode[i]]=-1;return g;}
 
 /* ---- optimal re-interleaving ---- */
@@ -255,7 +288,7 @@ static int64_t reinterleave(int L,int MODE){
       for(int k=k1-1;k>=k0;k--){imC[k]=cnext; /* G_k (before node k) is imSeg[k-k0]; pick c'<=cnext maximizing it */
         int32_t*Gk=imSeg+(size_t)(k-k0)*W;int32_t bv=INT32_MIN;int bc=cnext;for(int c=cnext;c>=0;c--)if(Gk[c]>bv){bv=Gk[c];bc=c;}cnext=bc;}}
     int ia=0,ib=0,o=0;while(ia<na||ib<nb){if(ia<na&&imC[ia]<=ib)imNew[o++]=imA[ia++];else imNew[o++]=imB[ib++];}
-    for(int i=0;i<N;i++){ord[i]=imNew[i];pos[imNew[i]]=i;}imwin++;imgain+=g;}
+    for(int i=0;i<N;i++){ord[i]=imNew[i];pos[imNew[i]]=i;}memset(adirty,1,N);imwin++;imgain+=g;}
   for(int k=0;k<na;k++)imIn[imA[k]]=0;
   return g>0?g:0;}
 
@@ -284,7 +317,7 @@ int main(int argc,char**argv){
   ord=malloc(N*4);pos=malloc(N*4);sbuf=malloc((size_t)(maxdeg+2)*8);wq=malloc(N*4);inq=calloc(N,1);tabu=calloc(N,1);locked=malloc(N*4);
   size_t ol;char*ob=slurp(argv[5],&ol);char*q=ob;while(*q&&*q!='\n')q++;q++;
   while(*q){if(*q<'0'||*q>'9'){q++;continue;}uint64_t id=rdu64(&q);q++;uint64_t o=rdu64(&q);while(*q&&*q!='\n')q++;if(*q)q++;ord[o]=lookup(id);}
-  free(ob);for(int i=0;i<N;i++)pos[ord[i]]=i;
+  free(ob);for(int i=0;i<N;i++)pos[ord[i]]=i;adirty=malloc(N);memset(adirty,1,N);sbuf2=malloc((size_t)(maxdeg+2)*8);bicheck=getenv("BICHECK")!=NULL;
   int64_t cur=exact_score();fprintf(stderr,"start %lld (%.4f%%)\n",(long long)cur,100.0*cur/total);
   for(int i=0;i<N;i++)push(ord[i]);cur+=drain(0);
   fprintf(stderr,"local opt %lld (%.4f%%) %.1fs\n",(long long)cur,100.0*cur/total,now()-t0);
@@ -302,6 +335,7 @@ int main(int argc,char**argv){
   if(IMP>0){int CKm=1;while(CKm*CKm<IML)CKm++;size_t W=(size_t)N+1;imA=malloc(N*4);imB=malloc(N*4);imIdx=malloc(N*4);imG=malloc(W*4);imC=malloc(N*4);imNew=malloc(N*4);
     imIn=calloc(N,1);imD=calloc(W+1,8);imCk=malloc(W*4*(size_t)(CKm+2));imSeg=malloc(W*4*(size_t)(CKm+2));if(IMMODE==3)build_clusters(30,IML);}
   fprintf(stderr,"reinterleave: IMP=%.3f IML=%d IMMODE=%d\n",IMP,IML,IMMODE);
+  TOPOG=argc>34?atof(argv[34]):0.0;tkey=malloc(N*4);fprintf(stderr,"topo guidance %.2f\n",TOPOG);
   double REGLO=argc>32?atof(argv[32]):0.0,REGHI=argc>33?atof(argv[33]):0.0;int RLO=0,RN=N;if(REGHI>REGLO){RLO=(int)(REGLO*N);RN=(int)(REGHI*N)-RLO;if(RN<1)RN=1;}
   fprintf(stderr,"region: %d..%d\n",RLO,RLO+RN);
   gmem=malloc(256*4);ing=calloc(N,1);gext=malloc(sizeof(int64_t)*(size_t)(maxdeg+1)*202);long gtry=0,gwin=0;int64_t ggain=0;double gtime=0;
@@ -351,7 +385,7 @@ int main(int argc,char**argv){
     else{cur+=d;if(d>0){up++;if(smart)smart_wins++;}nlog=0;}
     {double dt=now()-ti;if(imv){itry++;itime+=dt;if(d>0){iwin++;igain+=d;}}else if(sdp){stry++;stime+=dt;if(d>0){swin++;sgain+=d;}}else if(grp){gtry++;gtime+=dt;if(d>0){gwin++;ggain+=d;}}else if(topo){ttry++;ttime+=dt;if(d>0){twin++;tgain+=d;}}else if(hub){htry[htype]++;htime[htype]+=dt;if(d>0){hwin[htype]++;hgain[htype]+=d;}}else{ntry++;ntime+=dt;if(d>0){nwin++;ngain+=d;}}}
     if(cur>best){best=cur;memcpy(bestord,ord,(size_t)N*4);sinceb=0;}else sinceb++;
-    if(T>0&&sinceb>40000){memcpy(ord,bestord,(size_t)N*4);for(int i=0;i<N;i++)pos[ord[i]]=i;cur=best;sinceb=0;resets++;}
+    if(T>0&&sinceb>40000){memcpy(ord,bestord,(size_t)N*4);for(int i=0;i<N;i++)pos[ord[i]]=i;memset(adirty,1,N);cur=best;sinceb=0;resets++;}
     if((it&1023)==0&&best>dumped&&now()-lastd>60){
       for(int i=0;i<N;i++)tpos[bestord[i]]=i;int64_t chk=0;for(int64_t e=0;e<M;e++)if(tpos[src[e]]<tpos[dst[e]])chk+=wt[e];
       if(chk!=best){fprintf(stderr,"!! mismatch %lld vs %lld\n",(long long)best,(long long)chk);best=chk;}
@@ -371,5 +405,6 @@ int main(int argc,char**argv){
   fprintf(stderr,"group moves: tries %ld wins %ld (block alone gained %ld) gain %lld time %.0fs -> %.2f/s\n",gtry,gwin,gdirect,(long long)ggain,gtime,gtime>0?ggain/gtime:0);
   fprintf(stderr,"slot dp: tries %ld wins %ld (dp alone gained %ld times, %lld; dp<cur %ld, dp==cur %ld) gain %lld time %.0fs -> %.2f/s\n",stry,swin,sdwin,(long long)sdgain,sdless,sdeq,(long long)sgain,stime,stime>0?sgain/stime:0);
   fprintf(stderr,"reinterleave: tries %ld wins %ld (dp alone gained %ld times, %lld) gain %lld time %.0fs -> %.2f/s\n",itry,iwin,imwin,(long long)imgain,(long long)igain,itime,itime>0?igain/itime:0);
+  if(bicheck)fprintf(stderr,"bicheck mismatches: %ld\n",bimis);
   fprintf(stderr,"DONE %lld (%.4f%%)  iterations %ld\n",(long long)chk,100.0*chk/total,it);
   return 0;}
