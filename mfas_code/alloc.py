@@ -8,7 +8,7 @@ bins, then cuts the order into NREG regions of equal heat (hot stretches get
 narrow regions, i.e. more islands per neuron). Global islands are kept.
 Also re-tunes the move mix (TOPOP, GP; the rest is ordinary kicks) for all
 islands: time goes to move types in proportion to their gain per second over
-the last round (at least 15% each), smoothed with the previous mix.
+the last round (at least 5% each), smoothed with the previous mix.
 Writes the new config to CFG (atomically)."""
 import json, os, re, sys
 cfg, prefix, heatf, nreg = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4])
@@ -66,7 +66,7 @@ if all(agg[k][0] > 0 and agg[k][2] > 0 for k in agg):
     rate = {k: max(agg[k][1], 0) / agg[k][2] for k in agg}
     cost = {k: agg[k][2] / agg[k][0] for k in agg}
     tot = sum(rate.values()) or 1.0
-    share = {k: 0.15 + 0.55 * rate[k] / tot for k in agg}
+    share = {k: 0.05 + 0.85 * rate[k] / tot for k in agg}
     pr = {k: share[k] / cost[k] for k in agg}; z = sum(pr.values())
     pr = {k: v / z for k, v in pr.items()}
     oldt, oldg = float(tmpl[2]), float(tmpl[6])
