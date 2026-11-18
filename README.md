@@ -23,6 +23,7 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + hub-move island search (47 rounds) | 35,499,190 | 84.70% |
 | + TopoShuffle kicks, one core, 10 min | 35,505,143 | 84.71% |
 | + TopoShuffle island search (14 rounds) | 35,512,621 | 84.73% |
+| + overnight 18 Nov: island merge, regional islands, faster solver | 35,551,497 | 84.82% |
 | **This repo, best so far** | **35551497** | **84.823%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
@@ -132,7 +133,7 @@ below was kept only if the next rounds gained more than the ones before it:
 | `alloc.py` re-draws the slices every round from where gains came | 04:47 | 35,531,627 |
 | move mix rebalanced (TopoShuffle had 75% of time at 0.05/s) | 05:33 | 35,538,007 |
 | partner lists kept sorted instead of sorted per evaluation | 06:41 | 35,539,506 |
-| islands keep equal-score kicks (non-strict) | 07:32 | see results |
+| islands keep equal-score kicks (non-strict) | 07:32 | 35,551,497 at 11:00 |
 
 - **`tmerge`** folds every island into the best one. The child keeps each
   pair the base gets right unless the island broke it (right in the round's
