@@ -23,7 +23,7 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + hub-move island search (47 rounds) | 35,499,190 | 84.70% |
 | + TopoShuffle kicks, one core, 10 min | 35,505,143 | 84.71% |
 | + TopoShuffle island search (14 rounds) | 35,512,621 | 84.73% |
-| **This repo, best so far** | **35540737** | **84.798%** |
+| **This repo, best so far** | **35547643** | **84.814%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
@@ -118,6 +118,63 @@ minutes), so the shuffles release a batch of improvements rather than set a
 new steady rate; by the end they still gained about +3 per second per core.
 Islands that shuffle the whole order can't be merged (their diff is the whole
 order), so take the best island instead.
+
+**Overnight, 18 Nov: a merge that works for shuffling islands, regional
+islands, a 2.5x faster solver.** Starting from 35,512,621 at 03:30, each step
+below was kept only if the next rounds gained more than the ones before it:
+
+| change | from | best by then |
+|---|---|---|
+| `tmerge`: merge in edge space (below) | 03:40 | 35,512,928 |
+| group moves (`ilsg`), merge after every 5-minute round | 03:39 | 35,518,277 |
+| hub moves off (0 gain, ~40% of island time), 14 islands | 04:10 | 35,521,958 |
+| regional islands: each kicks only inside its slice of the order | 04:31 | 35,525,762 |
+| `alloc.py` re-draws the slices every round from where gains came | 04:47 | 35,531,627 |
+| move mix rebalanced (TopoShuffle had 75% of time at 0.05/s) | 05:33 | 35,538,007 |
+| partner lists kept sorted instead of sorted per evaluation | 06:41 | 35,539,506 |
+| islands keep equal-score kicks (non-strict) | 07:32 | see results |
+
+- **`tmerge`** folds every island into the best one. The child keeps each
+  pair the base gets right unless the island broke it (right in the round's
+  seed, wrong in the island), and adds each pair the island fixed (wrong in
+  the seed, right in the island); a topological sort of those constraints
+  (cycles broken at the smallest key) plus sifting gives the child, kept only
+  if it beats the base. Shuffling islands differ from the seed in nearly every
+  position but in few pairs, which is why the old position-based merge failed
+  on them. First test: best island +130 over the seed, merged +307.
+- **Group moves**: an anchor and its K strongest partners are lifted out,
+  keeping their order, and put back as one block where the block is best as a
+  whole (exact: only edges leaving the group change). Members are frozen
+  while the rest repairs.
+- **Regional islands**: with every island searching the whole order, the
+  merge kept ~34% of what islands found; with disjoint slices, ~64%. Gains
+  were concentrated in the last ~15% of the order, so `alloc.py` keeps a heat
+  map of gain per unit of order and cuts the order into 12 slices of equal
+  heat each round (plus 2 whole-order islands). It also re-tunes how often
+  each move type runs from its gain per second.
+- **Sorting partner lists was 78% of island time.** A move shifts the
+  neurons in between by one place, which keeps their relative order, so only
+  the moved neuron's entry in each partner list needs relocating. 2.5x more
+  iterations, and on the real graph the result of every evaluation matched
+  the old code (zero mismatches).
+- **Equal-score kicks**: the edge-space merge doesn't care how far an island
+  drifts on a plateau, so islands now keep kicks that tie. Per-round gains
+  went from ~+120 to ~+400.
+
+Tried tonight and dropped (measured on the real graph):
+
+- **Exact slot permutations** (DP over subsets: best way to permute up to 16
+  strongly linked neurons among the positions they already hold): 5 gains in
+  ~490,000 tries. Single-insertion optima are already optimal under these.
+- **Optimal re-interleaving** (exact DP merging a set back into the rest,
+  keeping both orders, O(|set| x N)): 2,000-neuron stretches +524 in 4 minutes
+  from a fresh seed, ~0.1/s afterwards; larger stretches, random sets,
+  label-propagation clusters and hub neighbourhoods ~0.
+- **Guided TopoShuffle** (keys pulled toward wrong-side partners): the
+  shuffle itself gained 0, worse than random keys.
+- **Annealing** (T=3) in islands: +5 vs +80 in 150 s; kicks of up to 16
+  neurons: +48 vs +80; trying two child constructions in the merge: +329 vs
+  +325 for twice the time.
 
 ## Upper bound
 
