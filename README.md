@@ -24,7 +24,7 @@ Challenge: https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
 | + TopoShuffle kicks, one core, 10 min | 35,505,143 | 84.71% |
 | + TopoShuffle island search (14 rounds) | 35,512,621 | 84.73% |
 | + overnight 18 Nov: island merge, regional islands, faster solver | 35,551,497 | 84.82% |
-| **This repo, best so far** | **35551497** | **84.823%** |
+| **This repo, best so far** | **35551569** | **84.824%** |
 | Leaderboard top (Nov 2026) | 35,544,233 | 84.81% |
 
 ## What works
