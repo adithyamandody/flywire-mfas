@@ -179,10 +179,39 @@ Tried tonight and dropped (measured on the real graph):
 
 ## Upper bound
 
-519,895 reciprocal neuron pairs force 2,815,303 of weight backward in any
-ordering, so no solution can exceed **39,096,838 (93.28%)** (`bound2.py`).
-The bound is loose — longer cycles force more — so it does not show how
-close the leaderboard is to optimal.
+How feedforward can this brain possibly be? Our ordering proves at least
+84.82% is reachable; the question is how much of the remaining gap is even
+achievable by anyone.
+
+In any ordering every directed cycle has at least one backward connection.
+Give each cycle a weight so that the cycles through any one connection never
+use more than that connection's weight; then the backward weight is at least
+the sum of the cycle weights, whatever the ordering. `bound3.c` builds such a
+packing greedily on residual capacities: 2-cycles first (2 connections spent
+per unit of bound), then 3-cycles, then longer ones found by bounded search in
+what is left.
+
+| packing | forced backward | upper bound | |
+|---|---|---|---|
+| reciprocal pairs only (`bound2.py`) | 2,815,303 | 39,096,838 | 93.283% |
+| + all 3-cycles | 4,600,109 | 37,312,032 | 89.024% |
+| + longer cycles (best run) | 4,697,043 | 37,215,098 | 88.793% |
+| **verified packing** (995,074 cycles) | **4,089,720** | **37,822,421** | **90.242%** |
+
+`check_bound.py` re-reads the graph and the dumped packing and checks every
+line is a real directed cycle and that no connection is over-used — so the
+90.242% row is proved from the graph file alone, not from trusting `bound3.c`.
+The 88.793% run was faster because it did not dump its cycles; re-running it
+with the dump is what it takes to verify that row too.
+
+So the answer lies in **84.82% – 90.24%**, down from a 93.28% ceiling: the
+window on what any ordering could achieve is about a third narrower than the
+reciprocal-pair bound makes it look.
+
+What did not work: repeating the 3-cycle sweep with a fresh random node order
+adds nothing (the sweep already visits every in/out pair at every node, so one
+pass saturates). Capping the search for longer cycles at 20,000 visited
+neurons per attempt found half as many as the uncapped search.
 
 ## What did not work (measured, not guessed)
 
