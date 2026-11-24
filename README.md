@@ -177,6 +177,18 @@ Tried tonight and dropped (measured on the real graph):
   neurons: +48 vs +80; trying two child constructions in the merge: +329 vs
   +325 for twice the time.
 
+## What the ordering says about the brain
+
+Joined to FlyWire's published annotations, the ordering reproduces the fly's
+input-to-output axis with no biological input (sensory neurons at the 7.9%
+mark, motor neurons at 99.8%), shows the outbound visual pathway to be almost
+purely feedforward (2.4% backward) while the return paths are 38-75% backward,
+and finds that inhibitory connections are twice as likely to run backward as
+excitatory ones. The neurons carrying the most feedback are APL and CT1, the
+fly's two textbook giant inhibitory feedback cells.
+
+See [BIOLOGY.md](BIOLOGY.md); `mfas_code/biology.py` reproduces it.
+
 ## Upper bound
 
 How feedforward can this brain possibly be? Our ordering proves at least
