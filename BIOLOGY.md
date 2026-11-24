@@ -143,6 +143,16 @@ By feedback per neuron the densest classes are ME.LO (1,130 each) and the
 antennal lobe local neurons ALLN (848 each) — the lateral inhibition of the
 olfactory system.
 
+## Does this hold in a second brain?
+
+Partly, and we checked. The same pipeline run on Janelia's hemibrain — a
+different fly, a different lab, a different reconstruction — reproduces the
+axis, the feedforward purity of the inward route, the near-absence of feedback
+onto output neurons, and APL at the top of the feedback ranking; across 2,831
+shared cell types the feedback each type carries correlates at Spearman
+rho 0.615. The glutamate result in section 3 does **not** replicate.
+See [HEMIBRAIN.md](HEMIBRAIN.md).
+
 ## Caveats
 
 - **Our ordering is one of many near-optimal ones.** Neurons with similar

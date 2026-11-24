@@ -189,6 +189,23 @@ fly's two textbook giant inhibitory feedback cells.
 
 See [BIOLOGY.md](BIOLOGY.md); `mfas_code/biology.py` reproduces it.
 
+## Does it hold in a second brain?
+
+We ran the whole pipeline again on Janelia's **hemibrain** — a different fly,
+a different lab, a different reconstruction (21,737 neurons, 1,764,123
+connections; our ordering reaches 79.13% forward). The input-to-output axis
+comes back (descending neurons at 97.2%), the inward visual route is as pure
+relative to its own brain as FlyWire's (0.30x the brain-wide backward rate
+against 0.31x), output neurons again receive almost no feedback, and APL is
+again the single neuron carrying the most feedback of any in the brain.
+Across all 2,831 cell types shared by the two connectomes, how much feedback
+a type carries correlates at Spearman rho 0.615 (shuffled control: 0.057).
+One claim does not survive: glutamate's backward bias is 1.40x in FlyWire and
+0.95x in hemibrain.
+
+See [HEMIBRAIN.md](HEMIBRAIN.md); `mfas_code/build_hemibrain.py`,
+`mfas_code/hemibrain_bio.py` and `mfas_code/crosscheck.py` reproduce it.
+
 ## Upper bound
 
 How feedforward can this brain possibly be? Our ordering proves at least
