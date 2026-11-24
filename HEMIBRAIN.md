@@ -183,6 +183,34 @@ feedforward visual processing, which is easy weight to point the right way.
 Hemibrain is central brain — the recurrent part — with its sensory inputs cut
 off, so almost everything in it is in a loop with something else.
 
+## How much is left on the table
+
+The same cycle-packing argument used on FlyWire (see the README) applies here:
+assign each directed cycle a weight so that the cycles through any one
+connection never exceed that connection's weight, and the sum is weight that
+*must* point backward in any ordering whatsoever.
+
+```
+cycles packed: 264,098 of length 2, 289,939 of length 3, 115,539 longer
+connections used beyond their weight: 0   (must be 0)
+weight forced backward in any ordering  2,377,741
+UPPER BOUND on forward weight          10,165,208  (81.043%)
+```
+
+Independently re-checked with `check_bound.py`, which re-reads the graph and
+all 669,576 packed cycles, confirms every line is a real directed cycle and
+that no connection is over-used, and arrives at the same figure.
+
+| | our ordering | proved ceiling | gap |
+|---|---|---|---|
+| FlyWire | 84.824% | 90.242% | 5.42 points |
+| hemibrain | **79.132%** | **81.043%** | **1.91 points** |
+
+So hemibrain's lower feedforward share is not our search falling short. Its
+ordering is within 1.91 points of anything that could ever exist, against 5.42
+for FlyWire. The central brain, with its sensory input cut away, really is
+that recurrent — there is almost nothing left to win there.
+
 ## Caveats
 
 - **The labels are FlyWire's.** Class and transmitter are carried across by

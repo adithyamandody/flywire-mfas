@@ -200,6 +200,9 @@ against 0.31x), output neurons again receive almost no feedback, and APL is
 again the single neuron carrying the most feedback of any in the brain.
 Across all 2,831 cell types shared by the two connectomes, how much feedback
 a type carries correlates at Spearman rho 0.615 (shuffled control: 0.057).
+A verified cycle-packing bound puts hemibrain's ceiling at 81.043%, so that
+ordering is within 1.91 points of optimal against FlyWire's 5.42 — the lower
+figure is the central brain's recurrence, not a weaker search.
 One claim does not survive: glutamate's backward bias is 1.40x in FlyWire and
 0.95x in hemibrain.
 
