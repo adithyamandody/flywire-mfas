@@ -16,6 +16,7 @@ as a share of that type's own weight) is the test that size cannot explain.
 import csv, sys
 
 fw_graph, fw_order, annot, hb_graph, hb_order, hb_neurons = sys.argv[1:7]
+dump_path = sys.argv[7] if len(sys.argv) > 7 else None   # optional TSV for plotting
 
 def load_order(p):
     pos = {}
@@ -99,6 +100,13 @@ print(f"\nSpearman rank correlation across those {len(shared):,} cell types")
 print(f"  backward RATE  (share of the type's weight turned around) : {spearman(x_rate, y_rate):.3f}")
 print(f"  backward WEIGHT (absolute)                                : {spearman(x_back, y_back):.3f}")
 print(f"  total weight  -- the size control                         : {spearman(x_size, y_size):.3f}")
+
+if dump_path:
+    with open(dump_path, "w") as f:
+        f.write("cell_type\tfw_total\tfw_backward\thb_total\thb_backward\n")
+        for k in shared:
+            f.write(f"{k}\t{fw_tot[k]}\t{fw_back.get(k,0)}\t{hb_tot[k]}\t{hb_back.get(k,0)}\n")
+    print(f"\nper-type table written to {dump_path}")
 
 rows = sorted(shared, key=lambda k: -(fw_back.get(k, 0) / fw_tot[k]))
 # how big a correlation would chance give? shuffle one side, 200 times
