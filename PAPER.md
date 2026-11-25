@@ -1,7 +1,7 @@
 # A maximally feedforward ordering of the *Drosophila* connectome recovers its processing hierarchy and replicates across two brains
 
 **Adithya Mandody**, independent researcher.
-Draft, 24 November 2026. Code and data: https://github.com/adithyamandody/flywire-mfas
+Draft, 25 November 2026. Code and data: https://github.com/adithyamandody/flywire-mfas
 
 ---
 
@@ -417,7 +417,10 @@ analysis script in `mfas_code/`, ran the experiments, produced the figures
 and drafted this manuscript; several of the analyses were its own
 proposals, among them the hemibrain replication (§2.6) and the cell-type
 correlation (§2.7). The author set the direction and decided at each stage
-which lines to pursue.
+which lines to pursue, and did not rely on Claude's account of its own
+results: the author ran `score.py` and `check_bound.py`, read the solver and
+the analysis code, read the cited sources, and checked the figures and the
+numbers quoted here against the underlying data.
 
 Because that is a larger role than a declaration alone can qualify, the
 central claims are built so as not to rest on trust in the process that
@@ -446,10 +449,12 @@ assistance. Claude (Anthropic) wrote the solver and the analysis code,
 designed and implemented the cycle-packing bound, ran the experiments,
 produced the figures, proposed several of the analyses and drafted this
 manuscript; §5 gives the detail and the checks that are independent of it.
-The author set the direction, decided which lines to pursue, and takes full
-responsibility for this paper, including its claims, figures and references.
-No AI system is an author, and none could be: accountability for a
-scientific claim cannot be delegated to a model.
+The author set the direction and decided which lines to pursue; ran the
+scorer and the bound verifier; read the solver and the analysis code; read
+the cited sources; checked the figures and quoted numbers against the data;
+and takes full responsibility for this paper, including its claims, figures
+and references. No AI system is an author, and none could be:
+accountability for a scientific claim cannot be delegated to a model.
 
 ---
 
@@ -502,15 +507,15 @@ scientific claim cannot be delegated to a model.
   And the inhibitory role of glutamate is established in the antennal lobe,
   not brain-wide — which is itself a reason not to have expected the
   glutamate result to generalise.
-- **One sentence only you can verify.** The disclosure states what the
-  author did: set the direction and chose which lines to pursue at each
-  stage. That is what I can attest to. If you also read code, re-ran a
-  check, or went to the sources yourself, add it — that is precisely the
-  "demonstrable human accountability" the policies ask for, and it counts
-  for more stated by you than inferred by me. Equally, do not let the
-  sentence claim more review than happened; an overstated oversight claim
-  is the one thing in this draft that a referee could not check and that
-  would be worth retracting over.
+- **The oversight sentence is yours, and you set it.** §5 and §6 state that
+  you ran the scorer and the bound verifier, read the solver and the
+  analysis code, read the cited sources, and checked the figures and quoted
+  numbers against the data — confirmed by you on 25 November 2026. That is
+  the "demonstrable human accountability" the policies ask for, and it is
+  the strongest part of the disclosure precisely because it is specific. It
+  is also the one claim in the paper a referee cannot check, so keep it
+  true: if a later revision adds material you have not been through
+  yourself, narrow the sentence to match before submitting.
 - **Leaderboard status.** Our 35,551,569 exceeds the figures published by
   Bader et al. (35,459,266) and Vahidi (0.8461), and the top public
   leaderboard entry as of November 2026 (35,544,233). The challenge closed in

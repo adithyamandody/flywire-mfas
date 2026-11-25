@@ -323,7 +323,9 @@ This work was carried out with Claude (Anthropic), used as a research tool
 and not only for writing: the solver, the cycle-packing bound, every
 analysis script here and the paper draft were written by it, and several of
 the analyses were its proposals. Adithya Mandody set the direction, decided
-what to pursue, and is responsible for the result.
+what to pursue, ran the scorer and the bound verifier, read the code and the
+cited sources, checked the figures against the data, and is responsible for
+the result.
 
 The claims are built not to depend on that. `score.py` re-reads the graph
 and an ordering from disk and recomputes the score with no code shared with
