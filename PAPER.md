@@ -410,6 +410,47 @@ external dependencies, in the repository above. Both orderings
 (`best_solution.csv`, `hemibrain_solution.csv`) are included, along with the
 scorer and bound verifier used to check every figure quoted here.
 
+**Use of AI assistance.** This work was carried out with Claude (Anthropic)
+throughout. Claude wrote the solver (`springrank.c`, `ilsg.c`, `tmerge.c`),
+designed and implemented the cycle-packing bound (`bound3.c`), wrote every
+analysis script in `mfas_code/`, ran the experiments, produced the figures
+and drafted this manuscript; several of the analyses were its own
+proposals, among them the hemibrain replication (§2.6) and the cell-type
+correlation (§2.7). The author set the direction and decided at each stage
+which lines to pursue.
+
+Because that is a larger role than a declaration alone can qualify, the
+central claims are built so as not to rest on trust in the process that
+produced them. The score of §2.1 is recomputed from the published challenge
+graph by `score.py`, a pure-stdlib script that re-reads the graph and the
+ordering from disk and shares no code with the C solver. The bound is
+re-verified by `check_bound.py`, which re-reads the graph and every cycle in
+the packing, confirms each is a real directed cycle and checks the capacity
+constraint connection by connection; a bound that could not be re-verified
+this way was discarded rather than reported, which happened once. Both
+checks run on public data in minutes. The biological results join published
+annotations [2,4] to the ordering by identifier, and the principal ones
+replicate in an independently collected connectome (§2.6).
+
+Fabricated citation is a known failure mode of language models. Every
+reference here was therefore checked against the PubMed or Crossref record
+for the work, and the claims resting on each checked against the paper's
+full text wherever it was reachable.
+
+---
+
+## 6. AI use declaration
+
+Generative AI was used as a research tool in this work, not only as writing
+assistance. Claude (Anthropic) wrote the solver and the analysis code,
+designed and implemented the cycle-packing bound, ran the experiments,
+produced the figures, proposed several of the analyses and drafted this
+manuscript; §5 gives the detail and the checks that are independent of it.
+The author set the direction, decided which lines to pursue, and takes full
+responsibility for this paper, including its claims, figures and references.
+No AI system is an author, and none could be: accountability for a
+scientific claim cannot be delegated to a model.
+
 ---
 
 ## References
@@ -461,6 +502,15 @@ scorer and bound verifier used to check every figure quoted here.
   And the inhibitory role of glutamate is established in the antennal lobe,
   not brain-wide — which is itself a reason not to have expected the
   glutamate result to generalise.
+- **One sentence only you can verify.** The disclosure states what the
+  author did: set the direction and chose which lines to pursue at each
+  stage. That is what I can attest to. If you also read code, re-ran a
+  check, or went to the sources yourself, add it — that is precisely the
+  "demonstrable human accountability" the policies ask for, and it counts
+  for more stated by you than inferred by me. Equally, do not let the
+  sentence claim more review than happened; an overstated oversight claim
+  is the one thing in this draft that a referee could not check and that
+  would be worth retracting over.
 - **Leaderboard status.** Our 35,551,569 exceeds the figures published by
   Bader et al. (35,459,266) and Vahidi (0.8461), and the top public
   leaderboard entry as of November 2026 (35,544,233). The challenge closed in
@@ -468,10 +518,22 @@ scorer and bound verifier used to check every figure quoted here.
   and has not yet appeared on the leaderboard. Any "state of the art" claim
   should be phrased as a comparison to specific published numbers, as above,
   rather than as a leaderboard position.
-- **Disclosure.** This work was carried out with Claude (Anthropic) as a
-  collaborator throughout — the solver, the bound, the analysis code and this
-  draft. Most venues now require that to be disclosed somewhere; decide where
-  it goes and in what form.
+- **Disclosure.** Now written, as Methods §5 ("Use of AI assistance") plus a
+  standalone §6 declaration. That is the structure Springer Nature asks for
+  — a description in Methods and an AI use declaration at the end — and it
+  also satisfies ICMJE, who want research use in the Methods and writing
+  help in the acknowledgements; this work is both, so both are covered.
+  Nature Portfolio's current policy is risk-tiered, and the tiers matter
+  here: AI "contributing to reasoning", with verification, oversight and
+  demonstrable human accountability, is amber (permitted with care), while
+  "using an LLM to generate core research reasoning without disclosure" and
+  "generating hypotheses, analyses or conclusions and presenting them as
+  human-derived" are red (not permitted). The disclosure is what keeps this
+  work on the permitted side, so it should not be trimmed to a sentence in
+  the acknowledgements to make a word limit. Two things remain
+  venue-specific: most journals also want the statement at submission, in
+  the cover letter, so repeat it there; and if a venue has no numbered
+  section for it, §6 can move into the acknowledgements unchanged.
 - **Figures.** `figures/fig1_axis.svg`, `figures/fig2_crosscheck.svg` and
   `figures/fig3_pathways.svg`, all regenerated by `mfas_code/figures.py` from
   the orderings and the graphs. Figure 3 leaves the hemibrain comparison off
