@@ -49,7 +49,8 @@ $$\sum_{(u,v)\in E,\; \pi(u)<\pi(v)} w(u,v).$$
 
 This is the weighted linear ordering problem, equivalently the weighted
 minimum feedback arc set problem, and it is NP-hard [11]. The FlyWire
-Connectome Challenge [12] poses exactly this instance.
+Connectome Challenge [12] poses exactly this instance, on the whole-brain
+reconstruction of the adult female *Drosophila* brain [1].
 
 Two things make the exercise worth doing carefully. First, a heuristic
 ordering is only interesting if it is close to the best possible one;
@@ -192,14 +193,21 @@ glutamate.
 
 Ranking individual neurons by the backward weight they carry, the top of the
 list is APL (two copies, one per hemisphere, 55,913 and 48,211) followed by
-CT1 (42,467 and 41,217). APL spreads through the entire mushroom body and
-inhibits the Kenyon cells that store olfactory memories; CT1 contacts every
-column of the medulla and normalises visual input. Both are GABAergic and
-both are standard examples of wide-field feedback. Below them the list is
-local interneurons: lobula intrinsic (Li30/32/33), lobula plate intrinsic
-(LPi12/13), amacrine (Am1), serpentine medulla (Sm42). By feedback per
-neuron the densest classes are ME.LO (1,130 each) and antennal lobe local
-neurons (848 each) — the lateral inhibition of the olfactory system.
+CT1 (42,467 and 41,217). APL broadly innervates the whole mushroom body
+[13]; Kenyon cells excite it and it inhibits them in return, and that
+negative feedback loop is what keeps their odour code sparse [14]. CT1
+reaches into two neuropils of the optic lobe and visits each of their
+roughly 700 columns, covering the whole visual field [15]. Both are
+GABAergic by immunostaining — APL in [13], CT1 in [16] — and not only by
+the predicted labels of §2.4; both are standard examples of wide-field
+feedback. The ordering puts them at the top of the feedback ranking without
+being given any of this.
+
+Below them the list is local interneurons: lobula intrinsic (Li30/32/33),
+lobula plate intrinsic (LPi12/13), amacrine (Am1), serpentine medulla
+(Sm42). By feedback per neuron the densest classes are ME.LO (1,130 each)
+and antennal lobe local neurons (848 each) — the lateral inhibition that
+implements gain control in the antennal lobe [17].
 
 ### 2.6 Replication in an independent connectome
 
@@ -232,8 +240,10 @@ vs 20.87%), rates are compared relative to each brain's own:
 | glutamate | 1.40× | **0.95×** |
 
 Four of the five transmitter results and all of the pathway results survive.
-Glutamate, inhibitory in flies through GluCl channels, is 1.40× in FlyWire
-and dead average in hemibrain; we therefore regard the "feedback is
+Glutamate acts as an inhibitory transmitter in the fly antennal lobe,
+through the glutamate-gated chloride channel GluClα [20] — but that is
+evidence from one circuit, not from the brain as a whole. It is 1.40× in
+FlyWire and dead average in hemibrain; we therefore regard the "feedback is
 inhibitory" claim as supported for GABA and the modulators and unsupported
 for glutamate.
 
@@ -251,9 +261,12 @@ Ranking neurons by backward weight in each brain separately:
 
 Every type here except CT1 is in the top 0.11% of both brains. In hemibrain
 APL carries 105,167 units of backward weight, 2.6× the next neuron and about
-a thousand times the median. CT1 is the explicable exception: it is a single
-enormous cell spanning the medulla and lobula, and the hemibrain volume
-contains only a cropped fragment of it.
+a thousand times the median. Second to it is DPM, the mushroom body's other
+wide-field cell: one neuron per hemisphere, projecting over all of the lobes
+[18] and required to consolidate olfactory memory [19]. CT1 is the
+explicable exception: it is a single enormous cell spanning the medulla and
+lobula [15], and the hemibrain volume contains only a cropped fragment of
+it.
 
 Two further differences follow from what each volume contains rather than
 from the orderings. Hemibrain's traced set holds just 2 olfactory receptor
@@ -330,7 +343,13 @@ alongside it.
   optic lobe. Several differences from FlyWire are attributable to this and
   are marked where we can tell.
 - **Transmitter identities are predictions** [4], not measurements, at roughly
-  94% accuracy per neuron.
+  94% accuracy per neuron. DPM is a case where the prediction and the
+  immunostaining recorded in the annotations [2] disagree: predicted
+  dopaminergic, measured serotonergic and GABAergic.
+- **One position per neuron.** Each neuron is a single node here. CT1's
+  terminals have been shown to act as independent functional units [15], so
+  for a cell like it one position summarises hundreds of local circuits
+  rather than describing one.
 - Both connectomes are of female flies, and all results are correlational:
   they describe wiring, not computation.
 
@@ -400,20 +419,39 @@ scorer and bound verifier used to check every figure quoted here.
 7. Vahidi S. Feedforward ordering in neural connectomes via feedback arc minimization. arXiv:2506.13799 (2025).
 8. De Bacco C, Larremore DB, Moore C. A physical model for efficient ranking in networks. *Science Advances* **4**, eaar8260 (2018).
 9. Eades P, Lin X, Smyth WF. A fast and effective heuristic for the feedback arc set problem. *Information Processing Letters* **47**(6), 319–323 (1993).
-10. Varshney LR, Chen BL, Paniagua E, Hall DH, Chklovskii DB. Structural properties of the *Caenorhabditis elegans* neuronal network. *PLoS Computational Biology* **7**(2) (2011).
-11. Karp RM. Reducibility among combinatorial problems. In *Complexity of Computer Computations*, 85–103 (1972).
+10. Varshney LR, Chen BL, Paniagua E, Hall DH, Chklovskii DB. Structural properties of the *Caenorhabditis elegans* neuronal network. *PLoS Computational Biology* **7**(2), e1001066 (2011).
+11. Karp RM. Reducibility among combinatorial problems. In Miller RE, Thatcher JW (eds), *Complexity of Computer Computations*, 85–103. Plenum Press (1972).
 12. FlyWire Connectome MFAS Challenge. https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
+13. Liu X, Davis RL. The GABAergic anterior paired lateral neuron suppresses and is suppressed by olfactory learning. *Nature Neuroscience* **12**(1), 53–59 (2009).
+14. Lin AC, Bygrave AM, de Calignon A, Lee T, Miesenböck G. Sparse, decorrelated odor coding in the mushroom body enhances learned odor discrimination. *Nature Neuroscience* **17**(4), 559–568 (2014).
+15. Meier M, Borst A. Extreme compartmentalization in a *Drosophila* amacrine cell. *Current Biology* **29**(9), 1545–1550.e2 (2019).
+16. Takemura S-Y, Nern A, Chklovskii DB, Scheffer LK, Rubin GM, et al. The comprehensive connectome of a neural substrate for 'ON' motion detection in *Drosophila*. *eLife* **6**, e24394 (2017).
+17. Olsen SR, Wilson RI. Lateral presynaptic inhibition mediates gain control in an olfactory circuit. *Nature* **452**(7190), 956–960 (2008).
+18. Waddell S, Armstrong JD, Kitamoto T, Kaiser K, Quinn WG. The *amnesiac* gene product is expressed in two neurons in the *Drosophila* brain that are critical for memory. *Cell* **103**(5), 805–813 (2000).
+19. Keene AC, Stratmann M, Keller A, Perrat PN, Vosshall LB, Waddell S. Diverse odor-conditioned memories require uniquely timed dorsal paired medial neuron output. *Neuron* **44**(3), 521–533 (2004).
+20. Liu WW, Wilson RI. Glutamate is an inhibitory neurotransmitter in the *Drosophila* olfactory system. *Proceedings of the National Academy of Sciences* **110**(25), 10294–10299 (2013).
 
 ---
 
 ## Notes for the author, not for the draft
 
-- **Citations.** Every reference above was checked against its publisher or
-  repository listing, not read in full. Volume, page and article numbers
-  should be confirmed from the PDFs before submission, particularly [5],
-  [10] and [11].
-- **Primary sources still needed** for the APL, CT1 and DPM descriptions in
-  §2.5 and §2.6; they are stated there as textbook facts without citation.
+- **Citations.** All twenty references were checked against the PubMed or
+  Crossref record for the work — title, full author list, journal, volume,
+  issue, pages and year — rather than from memory. PMIDs for the ones added
+  here: [13] 19043409, [14] 24561998, [15] 31031119, [16] 28432786,
+  [17] 18344978, [18] 11114336, [19] 15504331, [20] 23729809. [5], [10] and
+  [11] were re-checked and the last two corrected (missing article number;
+  missing editors and publisher). **None of the twenty has been read beyond
+  its abstract.** Every claim they are attached to is drawn from the abstract
+  itself; anything that comes to rest on a paper's methods or figures should
+  be confirmed from the PDF.
+- **Two claims were corrected, not just cited**, when the sources turned out
+  not to support them. CT1 was described as normalising visual input: Meier
+  & Borst show that it covers every column and that its terminals are
+  independent, not that it normalises, so the text now says what they show.
+  And the inhibitory role of glutamate is established in the antennal lobe,
+  not brain-wide — which is itself a reason not to have expected the
+  glutamate result to generalise.
 - **Leaderboard status.** Our 35,551,569 exceeds the figures published by
   Bader et al. (35,459,266) and Vahidi (0.8461), and the top public
   leaderboard entry as of November 2026 (35,544,233). The challenge closed in
