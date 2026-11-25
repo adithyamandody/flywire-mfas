@@ -73,6 +73,26 @@ The brain's outbound route — optic lobe to projection neurons to central brain
 turned around. Every route running the other way is between a third and
 three-quarters backward.
 
+Taking both directions between each pair of classes sharpens this. Nine pairs
+carry at least 20,000 weight each way, and in every one of them the clean
+direction is between 0.8% and 8.7% backward while the return direction is
+between 27.3% and 75.0% — the brain-wide 15.18% falls strictly between the
+two every time:
+
+| the clean direction | | the other way | |
+|---|---|---|---|
+| ascending → central | 0.8% | central → ascending | 54.2% |
+| optic → visual_projection | 2.4% | visual_projection → optic | 53.1% |
+| central → descending | 2.8% | descending → central | 40.0% |
+| sensory → optic | 2.8% | optic → sensory | 35.2% |
+| visual_projection → central | 4.7% | central → visual_projection | 46.9% |
+| visual_centrifugal → optic | 5.0% | optic → visual_centrifugal | 37.6% |
+| visual_centrifugal → visual_projection | 5.4% | visual_projection → visual_centrifugal | 75.0% |
+| sensory → central | 6.7% | central → sensory | 27.3% |
+| visual_centrifugal → central | 8.7% | central → visual_centrifugal | 43.9% |
+
+Drawn as `figures/fig3_pathways.svg`.
+
 Counted by sheer volume, 80% of all backward weight is local (optic → optic
 48.1%, central → central 32.0%) — but those are also the two biggest blocks of
 the connectome, and their backward *rates*, 17.9% and 16.3%, are close to the

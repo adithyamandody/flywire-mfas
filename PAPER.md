@@ -113,7 +113,7 @@ violations.
 ### 2.2 The ordering recovers the input-to-output axis
 
 Joining the FlyWire order to the published annotations [2] — which cover
-136,635 of our 136,648 neurons — gives Figure 1. The search optimised a sum
+136,635 of our 136,648 neurons — gives Figure 1 and the medians below. The search optimised a sum
 of edge weights and nothing else; it had no access to any of these labels.
 
 | super class | neurons | median position |
@@ -136,32 +136,40 @@ evidence that the order carries information beyond its objective value.
 ### 2.3 Feedforward routes are nearly pure; the feedback is on the return path
 
 15.18% of all synaptic weight (6,360,572) points backward. That weight is
-very unevenly distributed across pathways:
+very unevenly distributed, and the clearest way to see it is to take each
+pair of classes and look at both directions between them (Figure 3). There
+are nine pairs of classes carrying at least 20,000 weight in both directions,
+and in **every one of them** one direction is far below the brain-wide rate
+and the other far above it:
 
-| pathway | total weight | % backward |
-|---|---|---|
-| optic → visual_projection | 3,649,881 | **2.4%** |
-| visual_projection → central | 1,512,229 | **4.7%** |
-| central → central | 12,523,698 | 16.3% |
-| optic → optic | 17,120,781 | 17.9% |
-| optic → visual_centrifugal | 120,639 | 37.6% |
-| descending → central | 252,549 | 40.0% |
-| central → visual_projection | 273,590 | 46.9% |
-| visual_projection → optic | 582,607 | 53.1% |
-| visual_projection → visual_centrifugal | 93,345 | **75.0%** |
+| the clean direction | % backward | the other way | % backward |
+|---|---|---|---|
+| ascending → central | 0.8% | central → ascending | 54.2% |
+| optic → visual_projection | 2.4% | visual_projection → optic | 53.1% |
+| central → descending | 2.8% | descending → central | 40.0% |
+| sensory → optic | 2.8% | optic → sensory | 35.2% |
+| visual_projection → central | 4.7% | central → visual_projection | 46.9% |
+| visual_centrifugal → optic | 5.0% | optic → visual_centrifugal | 37.6% |
+| visual_centrifugal → visual_projection | 5.4% | visual_projection → visual_centrifugal | **75.0%** |
+| sensory → central | 6.7% | central → sensory | 27.3% |
+| visual_centrifugal → central | 8.7% | central → visual_centrifugal | 43.9% |
 
-The brain's outbound route is almost perfectly feedforward; every route
-running the other way is between a third and three-quarters backward. By
-sheer volume, 80% of backward weight is local (optic→optic 48.1%,
-central→central 32.0%), but those are the two largest blocks in the
-connectome and their backward *rates* are close to the brain-wide figure.
-The structure is in the rates, not the totals.
+The clean directions span 0.8–8.7%, the return directions 27.3–75.0%, and
+the brain-wide figure of 15.18% falls strictly between the two in all nine
+cases. The ordering is not spreading its backward weight around; it is
+putting almost all of it on one side of each route.
 
-Sorting by the receiving neuron's class, the most feedback-saturated class in
-the brain is visual_centrifugal (45.7% of the 485,721 weight it receives),
-the neurons that by definition carry signals from the central brain back into
-the optic lobe. At the other end, motor neurons receive 0.9% backward: by the
-time the brain commits to an action, the loops are behind it.
+Connections within a class behave differently again. By sheer volume 80% of
+all backward weight is local — optic→optic 48.1%, central→central 32.0% —
+but these are the two largest blocks in the connectome and their backward
+*rates*, 17.9% and 16.3%, sit close to the brain-wide figure. The structure
+is in the rates between classes, not in the totals.
+
+Sorting instead by the receiving neuron's class, the most feedback-saturated
+class in the brain is visual_centrifugal (45.7% of the 485,721 weight it
+receives), the neurons that by definition carry signals from the central
+brain back into the optic lobe. At the other end, motor neurons receive 0.9%
+backward: by the time the brain commits to an action, the loops are behind it.
 
 ### 2.4 Feedback is biased toward inhibitory and modulatory transmitters
 
@@ -368,6 +376,12 @@ correlation of §2.7.
 **Statistics.** Spearman rank correlation with average ranks for ties. The
 null is 200 random permutations of one side.
 
+**Figures.** Drawn directly to SVG by `mfas_code/figures.py` with no plotting
+library. Figure 3 overlays the hemibrain rate only on routes whose two
+endpoint classes are both inside the hemibrain volume; routes defined by
+optic-lobe partners are not comparable between the two datasets and are shown
+for FlyWire alone.
+
 **Code and data.** All analysis code is pure-stdlib Python or C with no
 external dependencies, in the repository above. Both orderings
 (`best_solution.csv`, `hemibrain_solution.csv`) are included, along with the
@@ -411,6 +425,9 @@ scorer and bound verifier used to check every figure quoted here.
   collaborator throughout — the solver, the bound, the analysis code and this
   draft. Most venues now require that to be disclosed somewhere; decide where
   it goes and in what form.
-- **Figures.** `figures/fig1_axis.svg` and `figures/fig2_crosscheck.svg`,
-  regenerated by `mfas_code/figures.py`. A third figure showing the backward
-  rate by pathway would help §2.3 and does not exist yet.
+- **Figures.** `figures/fig1_axis.svg`, `figures/fig2_crosscheck.svg` and
+  `figures/fig3_pathways.svg`, all regenerated by `mfas_code/figures.py` from
+  the orderings and the graphs. Figure 3 leaves the hemibrain comparison off
+  any route involving the optic lobe or centrifugal neurons, because the
+  hemibrain volume does not contain their partners; that exclusion is stated
+  on the figure itself and should stay stated wherever it is reproduced.

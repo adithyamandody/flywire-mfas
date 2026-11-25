@@ -1,16 +1,21 @@
 """Figures for the paper. Pure stdlib; writes SVG directly.
 
-usage: python3 -I figures.py fw_order.csv annotations.tsv \
-                             hb_order.csv traced-neurons.csv \
+usage: python3 -I figures.py fw_graph.csv fw_order.csv annotations.tsv \
+                             hb_graph.csv hb_order.csv traced-neurons.csv \
                              pertype.tsv out_dir
+
+fig1  where each super class sits in each of the two orderings
+fig2  per cell type, the backward rate in one connectome against the other
+fig3  for every pair of classes, the two directions between them
 """
 import csv, sys, math
 
-fw_order, annot, hb_order, hb_neurons, pertype, out_dir = sys.argv[1:7]
+fw_graph, fw_order, annot, hb_graph, hb_order, hb_neurons, pertype, out_dir = sys.argv[1:9]
 
 INK = "#1b1b1b"; GREY = "#8a8a8a"; LIGHT = "#d8d8d8"
 FW = "#2d6a9f"; HB = "#b5562c"
 FONT = 'font-family="Helvetica,Arial,sans-serif"'
+esc = lambda s: s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 def load_order(p):
     pos = {}
@@ -24,40 +29,56 @@ def quartiles(vals):
     q = lambda p: vals[int(p * (len(vals) - 1))]
     return q(.25), q(.5), q(.75)
 
-# ---------- figure 1: where each class sits in each ordering ----------
-fwp = load_order(fw_order)
-fw_cls = {}
+# ---- labels -------------------------------------------------------------
+fw_cls_of = {}                      # FlyWire root id -> super class
+hb_votes = {}                       # hemibrain cell type -> super class votes
 with open(annot, newline="") as f:
     r = csv.DictReader(f, delimiter="\t")
     for row in r:
-        try: rid = int(row["root_id"])
-        except Exception: continue
         sc = (row.get("super_class") or "").strip()
-        if sc and rid in fwp: fw_cls.setdefault(sc, []).append(100 * fwp[rid] / (len(fwp) - 1))
-
-# hemibrain classes, via the FlyWire hemibrain_type -> super_class transfer
-votes = {}
-with open(annot, newline="") as f:
-    r = csv.DictReader(f, delimiter="\t")
-    for row in r:
-        ht = (row.get("hemibrain_type") or "").strip()
-        sc = (row.get("super_class") or "").strip()
-        if not ht or not sc: continue
-        for t in ht.split(","):
+        if not sc: continue
+        try: fw_cls_of[int(row["root_id"])] = sc
+        except Exception: pass
+        for t in (row.get("hemibrain_type") or "").split(","):
             t = t.strip()
-            if t: votes.setdefault(t, {})[sc] = votes.setdefault(t, {}).get(sc, 0) + 1
-hbp = load_order(hb_order)
-hb_cls = {}
+            if t: hb_votes.setdefault(t, {})[sc] = hb_votes.setdefault(t, {}).get(sc, 0) + 1
+hb_cls_of = {}                      # hemibrain body id -> super class
 with open(hb_neurons, newline="") as f:
     r = csv.reader(f); next(r)
     for row in r:
-        b = int(row[0]); t = (row[1] or "").strip()
-        if b not in hbp or t not in votes: continue
-        sc = max(votes[t].items(), key=lambda kv: kv[1])[0]
-        hb_cls.setdefault(sc, []).append(100 * hbp[b] / (len(hbp) - 1))
+        t = (row[1] or "").strip()
+        if t in hb_votes:
+            hb_cls_of[int(row[0])] = max(hb_votes[t].items(), key=lambda kv: kv[1])[0]
 
-order = sorted(fw_cls, key=lambda k: quartiles(fw_cls[k][:])[1])
-order = [k for k in order if len(fw_cls[k]) >= 30]
+fwp, hbp = load_order(fw_order), load_order(hb_order)
+
+def class_positions(pos, cls_of):
+    out = {}
+    for n, p in pos.items():
+        c = cls_of.get(n)
+        if c: out.setdefault(c, []).append(100.0 * p / (len(pos) - 1))
+    return out
+
+def pair_rates(graph, pos, cls_of):
+    """total and backward weight for every ordered pair of classes."""
+    tot, back, T, B = {}, {}, 0, 0
+    with open(graph, newline="") as f:
+        r = csv.reader(f); next(r)
+        for s, t, w in r:
+            s = int(s); t = int(t); w = int(w)
+            if s not in pos or t not in pos: continue
+            T += w
+            bw = pos[s] > pos[t]
+            if bw: B += w
+            a, b = cls_of.get(s), cls_of.get(t)
+            if not a or not b: continue
+            tot[(a, b)] = tot.get((a, b), 0) + w
+            if bw: back[(a, b)] = back.get((a, b), 0) + w
+    return tot, back, T, B
+
+# ======================= figure 1 ========================================
+fw_cls, hb_cls = class_positions(fwp, fw_cls_of), class_positions(hbp, hb_cls_of)
+order = [k for k in sorted(fw_cls, key=lambda k: quartiles(fw_cls[k][:])[1]) if len(fw_cls[k]) >= 30]
 
 W, H = 760, 40 + 34 * len(order) + 56
 L, R = 168, W - 30
@@ -73,7 +94,7 @@ s.append(f'<text x="{L}" y="20" {FONT} font-size="12" fill="{FW}">FlyWire (136,6
 s.append(f'<text x="{L+220}" y="20" {FONT} font-size="12" fill="{HB}">hemibrain (21,737 neurons)</text>')
 for i, g in enumerate(order):
     y0 = 48 + 34 * i
-    s.append(f'<text x="{L-10}" y="{y0+4:.0f}" {FONT} font-size="12" fill="{INK}" text-anchor="end">{g}</text>')
+    s.append(f'<text x="{L-10}" y="{y0+4:.0f}" {FONT} font-size="12" fill="{INK}" text-anchor="end">{esc(g)}</text>')
     for vals, col, dy in ((fw_cls.get(g), FW, -5), (hb_cls.get(g), HB, 7)):
         if not vals or len(vals) < 30: continue
         lo, md, hi = quartiles(vals[:])
@@ -84,7 +105,7 @@ for i, g in enumerate(order):
 s.append('</svg>')
 open(f"{out_dir}/fig1_axis.svg", "w").write("\n".join(s))
 
-# ---------- figure 2: per cell type, the two connectomes agree ----------
+# ======================= figure 2 ========================================
 pts = []
 with open(pertype) as f:
     r = csv.DictReader(f, delimiter="\t")
@@ -126,7 +147,7 @@ for a, b, _ in pts:
 for a, b, name in pts:
     if name in ("APL", "PVLP011", "DNp13", "lLN1_a", "CT1"):
         s.append(f'<circle cx="{px(a):.1f}" cy="{py(b):.1f}" r="4" fill="{HB}"/>')
-        s.append(f'<text x="{px(a)+7:.1f}" y="{py(b)+4:.1f}" {FONT} font-size="11" fill="{HB}">{name}</text>')
+        s.append(f'<text x="{px(a)+7:.1f}" y="{py(b)+4:.1f}" {FONT} font-size="11" fill="{HB}">{esc(name)}</text>')
 s.append(f'<text x="{M+S/2:.0f}" y="{H2-6}" {FONT} font-size="12" fill="{INK}" text-anchor="middle">'
          'share of the cell type’s weight pointing backward — FlyWire</text>')
 s.append(f'<text x="16" y="{M+S/2:.0f}" {FONT} font-size="12" fill="{INK}" text-anchor="middle" '
@@ -137,4 +158,77 @@ s.append(f'<text x="{M+10}" y="{M+38}" {FONT} font-size="13" fill="{INK}">'
          f'Spearman ρ = {rho:.3f}  (shuffled control: 0.057)</text>')
 s.append('</svg>')
 open(f"{out_dir}/fig2_crosscheck.svg", "w").write("\n".join(s))
-print(f"fig1: {len(order)} classes;  fig2: {len(pts):,} points, rho {rho:.3f}")
+
+# ======================= figure 3 ========================================
+fw_tot, fw_back, fw_T, fw_B = pair_rates(fw_graph, fwp, fw_cls_of)
+hb_tot, hb_back, hb_T, hb_B = pair_rates(hb_graph, hbp, hb_cls_of)
+MINW = 20000
+OUTSIDE = {"optic", "visual_centrifugal"}   # classes the hemibrain volume cuts off
+
+def rate(tot, back, k):
+    return 100.0 * back.get(k, 0) / tot[k] if k in tot and tot[k] else None
+
+pairs = []                       # unordered class pairs, both directions present
+seen = set()
+for (a, b), v in fw_tot.items():
+    if a == b or (b, a) not in fw_tot: continue
+    if v < MINW or fw_tot[(b, a)] < MINW: continue
+    key = tuple(sorted((a, b)))
+    if key in seen: continue
+    seen.add(key)
+    ra, rb = rate(fw_tot, fw_back, (a, b)), rate(fw_tot, fw_back, (b, a))
+    lo = (a, b, ra) if ra <= rb else (b, a, rb)      # the clean direction
+    hi = (b, a, rb) if ra <= rb else (a, b, ra)      # and the other one
+    pairs.append((lo, hi))
+pairs.sort(key=lambda p: p[0][2])
+
+RH, GAP, TOP = 19, 14, 84
+W3 = 880; L3 = 318; R3 = W3 - 118
+H3 = TOP + len(pairs) * (2 * RH + GAP) + 54
+MAXP = 80.0
+bx = lambda v: L3 + (R3 - L3) * min(v, MAXP) / MAXP
+s = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W3}" height="{H3}" viewBox="0 0 {W3} {H3}">',
+     f'<rect width="{W3}" height="{H3}" fill="white"/>']
+for g in range(0, int(MAXP) + 1, 20):
+    s.append(f'<line x1="{bx(g):.1f}" y1="{TOP-10}" x2="{bx(g):.1f}" y2="{H3-46}" stroke="{LIGHT}" stroke-width="1"/>')
+    s.append(f'<text x="{bx(g):.1f}" y="{H3-28}" {FONT} font-size="11" fill="{GREY}" text-anchor="middle">{g}%</text>')
+brain = 100.0 * fw_B / fw_T
+s.append(f'<line x1="{bx(brain):.1f}" y1="{TOP-10}" x2="{bx(brain):.1f}" y2="{H3-46}" '
+         f'stroke="{INK}" stroke-width="1" stroke-dasharray="5 3" opacity="0.7"/>')
+s.append(f'<text x="{bx(brain):.1f}" y="{TOP-16}" {FONT} font-size="11" fill="{INK}" text-anchor="middle">'
+         f'whole brain {brain:.1f}%</text>')
+s.append(f'<text x="24" y="24" {FONT} font-size="13" fill="{INK}">'
+         'Between any two classes of neuron, one direction is clean and the other is not</text>')
+s.append(f'<text x="24" y="42" {FONT} font-size="11.5" fill="{GREY}">'
+         'bars: share of that route\u2019s synaptic weight pointing backward in the FlyWire ordering'
+         f' \u00b7 <tspan fill="{HB}">\u25c6 hemibrain</tspan>, for routes with both ends inside that volume</text>')
+s.append(f'<text x="24" y="56" {FONT} font-size="11.5" fill="{GREY}">'
+         'hemibrain excludes the optic lobe, so routes defined by optic-lobe partners are not comparable'
+         ' and carry no diamond</text>')
+s.append(f'<text x="{(L3+R3)/2:.0f}" y="{H3-8}" {FONT} font-size="12" fill="{INK}" text-anchor="middle">'
+         'share of the route’s weight pointing backward</text>')
+for i, (lo, hi) in enumerate(pairs):
+    y0 = TOP + i * (2 * RH + GAP)
+    s.append(f'<line x1="18" y1="{y0+2}" x2="18" y2="{y0+2*RH-4}" stroke="{LIGHT}" stroke-width="2"/>')
+    for j, (a, b, r) in enumerate((lo, hi)):
+        yy = y0 + j * RH
+        s.append(f'<text x="{L3-12}" y="{yy+12}" {FONT} font-size="12" fill="{INK}" text-anchor="end">'
+                 f'{esc(a)} → {esc(b)}</text>')
+        s.append(f'<rect x="{L3}" y="{yy+3}" width="{max(bx(r)-L3, 1.2):.1f}" height="12" fill="{FW}" '
+                 f'opacity="{0.5 if j == 0 else 1.0}"/>')
+        hr = rate(hb_tot, hb_back, (a, b))
+        # hemibrain excludes the optic lobe, so any route defined by optic-lobe
+        # partners (optic, visual_centrifugal) is not comparable and is left off
+        show_hb = (hr is not None and hb_tot.get((a, b), 0) >= MINW
+                   and hb_tot.get((b, a), 0) >= MINW
+                   and a not in OUTSIDE and b not in OUTSIDE)
+        labx = bx(r) + 6
+        if show_hb:
+            s.append(f'<path d="M {bx(hr):.1f} {yy+3.5} l 5.5 5.5 l -5.5 5.5 l -5.5 -5.5 z" fill="{HB}"/>')
+            labx = max(bx(r), bx(hr) + 6) + 7
+        s.append(f'<text x="{labx:.1f}" y="{yy+13}" {FONT} font-size="11" fill="{FW}">{r:.1f}%</text>')
+        if show_hb:
+            s.append(f'<text x="{labx+32:.1f}" y="{yy+13}" {FONT} font-size="11" fill="{HB}">{hr:.1f}%</text>')
+s.append('</svg>')
+open(f"{out_dir}/fig3_pathways.svg", "w").write("\n".join(s))
+print(f"fig1: {len(order)} classes | fig2: {len(pts):,} types, rho {rho:.3f} | fig3: {len(pairs)} class pairs")

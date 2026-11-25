@@ -182,7 +182,9 @@ Tried tonight and dropped (measured on the real graph):
 Joined to FlyWire's published annotations, the ordering reproduces the fly's
 input-to-output axis with no biological input (sensory neurons at the 7.9%
 mark, motor neurons at 99.8%), shows the outbound visual pathway to be almost
-purely feedforward (2.4% backward) while the return paths are 38-75% backward,
+purely feedforward (2.4% backward) while the return paths are 27-75% backward
+-- across all nine pairs of classes with traffic both ways, one direction is
+under 9% backward and the other over 27% --
 and finds that inhibitory connections are twice as likely to run backward as
 excitatory ones. The neurons carrying the most feedback are APL and CT1, the
 fly's two textbook giant inhibitory feedback cells.
