@@ -153,12 +153,14 @@ these at the top:
 APL and CT1 — one of each per hemisphere, which is why each appears twice —
 are the fly's two best-known giant inhibitory feedback neurons. APL spreads
 through the whole mushroom body; Kenyon cells excite it and it inhibits them
-back, and that loop is what keeps their odour code sparse (Liu & Davis,
-*Nat Neurosci* 2009; Lin et al., *Nat Neurosci* 2014). CT1 reaches into two
-neuropils of the optic lobe and visits each of their ~700 columns, covering
-the whole visual field (Meier & Borst, *Curr Biol* 2019). Both are GABAergic
-by immunostaining, both are textbook examples of wide-field feedback. The
-optimisation found them without being told they exist.
+back, and that loop is what keeps their odour code sparse. In this graph the
+loop is direct and nearly complete: 5,176 of the 5,177 Kenyon cells synapse
+onto an APL, and 5,166 get a synapse back (Liu & Davis, *Nat Neurosci* 2009;
+Lin et al., *Nat Neurosci* 2014). CT1 reaches into two neuropils of the
+optic lobe and visits each of their ~700 columns, covering the whole visual
+field (Takemura et al., *eLife* 2017; Meier & Borst, *Curr Biol* 2019). Both
+are GABAergic by immunostaining, both are textbook examples of wide-field
+feedback. The optimisation found them without being told they exist.
 
 Below them the list is local interneurons: Li30/32/33 (lobula intrinsic),
 LPi12/13 (lobula plate intrinsic), Am1 (amacrine), Sm42 (serpentine medulla).

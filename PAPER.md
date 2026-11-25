@@ -195,13 +195,17 @@ Ranking individual neurons by the backward weight they carry, the top of the
 list is APL (two copies, one per hemisphere, 55,913 and 48,211) followed by
 CT1 (42,467 and 41,217). APL broadly innervates the whole mushroom body
 [13]; Kenyon cells excite it and it inhibits them in return, and that
-negative feedback loop is what keeps their odour code sparse [14]. CT1
-reaches into two neuropils of the optic lobe and visits each of their
-roughly 700 columns, covering the whole visual field [15]. Both are
-GABAergic by immunostaining — APL in [13], CT1 in [16] — and not only by
-the predicted labels of §2.4; both are standard examples of wide-field
-feedback. The ordering puts them at the top of the feedback ranking without
-being given any of this.
+negative feedback loop is what keeps their odour code sparse [14]. In this
+graph the loop is direct and nearly complete: 5,176 of the 5,177 Kenyon
+cells synapse onto an APL and 5,166 receive a synapse back, which the
+functional experiments on their own could not establish [14]. CT1 is a
+single giant cell spanning one stratum of the medulla and one of the lobula,
+with a separate arbour terminal in each column [16] — roughly 700 of them,
+covering the whole visual field [15]. Both are GABAergic by immunostaining
+rather than by the predicted labels of §2.4 — APL by anti-GABA [13], CT1 by
+anti-GAD1 [16] — and both are standard examples of wide-field feedback. The
+ordering puts them at the top of the feedback ranking without being given
+any of this.
 
 Below them the list is local interneurons: lobula intrinsic (Li30/32/33),
 lobula plate intrinsic (LPi12/13), amacrine (Am1), serpentine medulla
@@ -263,10 +267,10 @@ Every type here except CT1 is in the top 0.11% of both brains. In hemibrain
 APL carries 105,167 units of backward weight, 2.6× the next neuron and about
 a thousand times the median. Second to it is DPM, the mushroom body's other
 wide-field cell: one neuron per hemisphere, projecting over all of the lobes
-[18] and required to consolidate olfactory memory [19]. CT1 is the
-explicable exception: it is a single enormous cell spanning the medulla and
-lobula [15], and the hemibrain volume contains only a cropped fragment of
-it.
+[18], whose output is required during the consolidation of middle-term
+olfactory memory [19]. CT1 is the explicable exception: it is a single
+enormous cell spanning the medulla and lobula [15], and the hemibrain volume
+contains only a cropped fragment of it.
 
 Two further differences follow from what each volume contains rather than
 from the orderings. Hemibrain's traced set holds just 2 olfactory receptor
@@ -441,10 +445,15 @@ scorer and bound verifier used to check every figure quoted here.
   here: [13] 19043409, [14] 24561998, [15] 31031119, [16] 28432786,
   [17] 18344978, [18] 11114336, [19] 15504331, [20] 23729809. [5], [10] and
   [11] were re-checked and the last two corrected (missing article number;
-  missing editors and publisher). **None of the twenty has been read beyond
-  its abstract.** Every claim they are attached to is drawn from the abstract
-  itself; anything that comes to rest on a paper's methods or figures should
-  be confirmed from the PDF.
+  missing editors and publisher).
+- **How far each was read.** [13], [14], [16], [17] and [20] were read in
+  full text, and every claim resting on them was checked against the passage
+  that supports it. [15], [18] and [19] have no reachable free full text —
+  *Current Biology* serves a bot check, and the 2000 *Cell* and 2004
+  *Neuron* papers have no PMC deposit — so those three are confirmed only to
+  the level of their abstracts. Each claim attached to them is stated in its
+  abstract directly, but anyone with library access should confirm them from
+  the PDFs.
 - **Two claims were corrected, not just cited**, when the sources turned out
   not to support them. CT1 was described as normalising visual input: Meier
   & Borst show that it covers every column and that its terminals are
