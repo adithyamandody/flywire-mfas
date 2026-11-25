@@ -91,7 +91,7 @@ two every time:
 | sensory → central | 6.7% | central → sensory | 27.3% |
 | visual_centrifugal → central | 8.7% | central → visual_centrifugal | 43.9% |
 
-Drawn as `figures/fig3_pathways.svg`.
+Drawn as `figures/fig2_pathways.svg`.
 
 Counted by sheer volume, 80% of all backward weight is local (optic → optic
 48.1%, central → central 32.0%) — but those are also the two biggest blocks of

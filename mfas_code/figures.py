@@ -157,7 +157,7 @@ s.append(f'<text x="{M+10}" y="{M+20}" {FONT} font-size="13" fill="{INK}">'
 s.append(f'<text x="{M+10}" y="{M+38}" {FONT} font-size="13" fill="{INK}">'
          f'Spearman ρ = {rho:.3f}  (shuffled control: 0.057)</text>')
 s.append('</svg>')
-open(f"{out_dir}/fig2_crosscheck.svg", "w").write("\n".join(s))
+open(f"{out_dir}/fig3_crosscheck.svg", "w").write("\n".join(s))
 
 # ======================= figure 3 ========================================
 fw_tot, fw_back, fw_T, fw_B = pair_rates(fw_graph, fwp, fw_cls_of)
@@ -230,5 +230,5 @@ for i, (lo, hi) in enumerate(pairs):
         if show_hb:
             s.append(f'<text x="{labx+32:.1f}" y="{yy+13}" {FONT} font-size="11" fill="{HB}">{hr:.1f}%</text>')
 s.append('</svg>')
-open(f"{out_dir}/fig3_pathways.svg", "w").write("\n".join(s))
+open(f"{out_dir}/fig2_pathways.svg", "w").write("\n".join(s))
 print(f"fig1: {len(order)} classes | fig2: {len(pts):,} types, rho {rho:.3f} | fig3: {len(pairs)} class pairs")
