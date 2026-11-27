@@ -333,11 +333,17 @@ alongside it.
 
 ## 4. Limitations
 
-- **One ordering of many near-optimal ones.** Neurons with similar scores can
-  be exchanged with little effect on the total, so an individual neuron's
-  position is soft. The class- and type-level results involve thousands of
-  neurons each and are not sensitive to this; single-neuron positions should
-  not be over-read.
+- **One ordering of many near-optimal ones**, and we have measured what that
+  costs. Six orderings built from different starting layouts, with identical
+  search settings and no merging, land within 0.06% of each other in score
+  while disagreeing about the direction of roughly 1.2 million units of
+  weight — 2.4% of the graph. Across all six, sensory neurons sit at
+  7.8 ± 0.1% and motor neurons at 99.8 ± 0.1%, so the axis of §2.2 does not
+  depend on which of them is chosen. Finer classes are not all so stable:
+  Kenyon cells and antennal lobe projection neurons move by about twenty
+  points between basins, so the mushroom body's position in the hierarchy is
+  not determined by this method and nothing here rests on it. Single-neuron
+  positions should not be over-read at all.
 - **"Backward" means backward in this ordering.** Part of the backward weight
   is unavoidable and we bound it, but which particular edges get turned around
   depends on the ordering chosen.
