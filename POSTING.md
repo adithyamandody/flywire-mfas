@@ -90,7 +90,7 @@ publishers permit rather than outside it.
 ## 6. Optional, afterwards
 
 - **Re-send the leaderboard entry.** The board shows 35,551,497, the
-  ordering emailed on 18 November; the repo's best is 35,551,569. Only the
+  ordering emailed on 18 November; the repo's best is 35,551,576. Only the
   best is kept and submissions are unlimited, so re-sending stops a reader
   finding two numbers under one name.
 - **A note to Arie Matsliah** at Princeton, who verified the submission

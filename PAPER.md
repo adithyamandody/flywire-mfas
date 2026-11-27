@@ -12,7 +12,7 @@ sensation into action. The simplest bridge between the two is to ask for the
 ordering of neurons that makes the most synaptic weight point forward — the
 weighted minimum feedback arc set problem. We compute a high-quality solution
 for the FlyWire whole-brain connectome of adult *Drosophila* (136,648 neurons, 41,912,141
-synapses), reaching 35,551,569 forward weight (84.824%), above the best
+synapses), reaching 35,551,576 forward weight (84.824%), above the best
 figures we are aware of in print, and we prove by cycle packing that no
 ordering can exceed 87.374%, so the remaining gap is at most 2.6 points. The
 resulting order, built with no biological input whatsoever, places sensory
@@ -82,7 +82,7 @@ says how much room is left, (iii) a biological read-out of the order, and
 
 ### 2.1 An ordering with a certified optimality gap
 
-Our solver reaches **35,551,569** forward weight on the FlyWire challenge
+Our solver reaches **35,551,576** forward weight on the FlyWire challenge
 graph, 84.824% of the 41,912,141 total, against the challenge's own greedy
 baseline of 29,023,882 (69.25%). Every number we report was re-scored by an
 independent implementation written for the purpose.
@@ -101,7 +101,7 @@ then longer cycles found by bounded search — yields:
 | neurons | 136,648 | 21,737 |
 | connections | 5,657,719 | 1,764,123 |
 | total synaptic weight | 41,912,141 | 12,542,949 |
-| our forward weight | 35,551,569 (**84.824%**) | 9,925,483 (**79.132%**) |
+| our forward weight | 35,551,576 (**84.824%**) | 9,925,483 (**79.132%**) |
 | weight forced backward in any ordering | 5,291,688 | 2,377,741 |
 | upper bound | 36,620,453 (**87.374%**) | 10,165,208 (**81.043%**) |
 | remaining gap | **2.55 points** | **1.91 points** |
@@ -120,13 +120,13 @@ of edge weights and nothing else; it had no access to any of these labels.
 
 | super class | neurons | median position |
 |---|---|---|
-| ascending | 1,629 | 6.9% |
+| ascending | 1,629 | 7.1% |
 | sensory | 14,827 | **7.9%** |
 | visual_centrifugal | 524 | 16.9% |
 | optic | 77,509 | 47.0% |
-| visual_projection | 8,038 | 78.2% |
+| visual_projection | 8,038 | 78.1% |
 | central | 32,294 | 85.5% |
-| descending | 1,276 | 98.9% |
+| descending | 1,276 | 99.0% |
 | motor | 109 | **99.8%** |
 
 Sensory neurons land in the first tenth of the order, motor neurons in the
@@ -138,7 +138,7 @@ nonsense; the claims that depend on the optimisation are set out there.
 
 ### 2.3 Feedforward routes are nearly pure; the feedback is on the return path
 
-15.18% of all synaptic weight (6,360,572) points backward. That weight is
+15.18% of all synaptic weight (6,360,565) points backward. That weight is
 very unevenly distributed, and the clearest way to see it is to take each
 pair of classes and look at both directions between them (Figure 2). There
 are nine pairs of classes carrying at least 20,000 weight in both directions,
@@ -259,7 +259,7 @@ vs 20.87%), rates are compared relative to each brain's own:
 
 | | FlyWire | hemibrain |
 |---|---|---|
-| descending neurons, median position | 98.9% | 97.2% |
+| descending neurons, median position | 99.0% | 97.2% |
 | the way in (visual_projection → central) | 0.31× | **0.30×** |
 | the way back (central → visual_projection) | 3.09× | 2.30× |
 | feedback received by output neurons | 0.20× | **0.13×** |
@@ -347,12 +347,12 @@ scores 71.91% forward against our 84.824%. Yet:
 
 | class | optimised | out-share sort |
 |---|---|---|
-| ascending | 6.9% | 5.2% |
+| ascending | 7.1% | 5.2% |
 | sensory | **7.9%** | **7.2%** |
 | optic | 47.0% | 49.3% |
-| visual_projection | 78.2% | 79.0% |
+| visual_projection | 78.1% | 79.0% |
 | **central** | **85.5%** | **60.6%** |
-| descending | 98.9% | 94.6% |
+| descending | 99.0% | 94.6% |
 | motor | **99.8%** | **98.7%** |
 
 Every class lands within about two points of the optimised position except
@@ -608,15 +608,15 @@ accountability for a scientific claim cannot be delegated to a model.
   *Adithya Mandody, 35,551,497 (84.824%)*. Second is a new entry of the same
   date, Jean-René Denoual at 35,544,474 (84.807%), which displaced the
   35,544,233 that stood when this draft was written; the margin is 7,023.
-  Our 35,551,569 also exceeds the figures published by Bader et al.
+  Our 35,551,576 also exceeds the figures published by Bader et al.
   (35,459,266) and Vahidi (0.8461). The challenge itself closed in October
   2024 and the board is now an open "beat the top score" list, so a "state
   of the art" claim should still be phrased as a comparison to specific
   published numbers rather than as a leaderboard position — a position can
   change the week after a paper is posted, as it just did.
 - **The listed score is not our best.** The board shows 35,551,497, the
-  figure emailed on 18 November; the paper reports 35,551,569, found after
-  that email. The difference is 72 weight and no claim depends on it, but a
+  figure emailed on 18 November; the paper reports 35,551,576, found after
+  that email. The difference is 79 weight and no claim depends on it, but a
   reader who checks the board against the paper will see two numbers under
   one name. Submissions are unlimited and only the best is shown, so sending
   the improved ordering would close that gap before the preprint goes up.

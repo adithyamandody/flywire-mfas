@@ -67,7 +67,7 @@ whole argument is that anyone can re-run the checks.
 - [ ] Confirm the licence choice above.
 - [ ] Consider re-sending the improved ordering. The submission is now
       listed first (26 November 2026) as 35,551,497, while the paper reports
-      35,551,569; submissions are unlimited and only the best is shown, so
+      35,551,576; submissions are unlimited and only the best is shown, so
       re-sending would stop a reader finding two numbers under one name. No
       claim in the paper depends on it.
 

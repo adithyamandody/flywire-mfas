@@ -14,19 +14,19 @@
 <text x="168" y="20" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#2d6a9f">FlyWire (136,648 neurons)</text>
 <text x="388" y="20" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#b5562c">hemibrain (21,737 neurons)</text>
 <text x="158" y="52" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">sensory_ascending</text>
-<line x1="187.2" y1="43" x2="219.4" y2="43" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="205.5" cy="43" r="4" fill="#2d6a9f"/>
-<text x="213.5" y="47" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">7%</text>
+<line x1="187.1" y1="43" x2="216.4" y2="43" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="200.6" cy="43" r="4" fill="#2d6a9f"/>
+<text x="208.6" y="47" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">6%</text>
 <text x="158" y="86" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">ascending</text>
-<line x1="188.4" y1="77" x2="224.0" y2="77" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="206.6" cy="77" r="4" fill="#2d6a9f"/>
-<text x="214.6" y="81" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">7%</text>
+<line x1="188.4" y1="77" x2="224.3" y2="77" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="207.6" cy="77" r="4" fill="#2d6a9f"/>
+<text x="215.6" y="81" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">7%</text>
 <text x="158" y="120" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">sensory</text>
-<line x1="189.2" y1="111" x2="241.2" y2="111" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="212.7" cy="111" r="4" fill="#2d6a9f"/>
-<text x="220.7" y="115" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">8%</text>
+<line x1="188.7" y1="111" x2="241.2" y2="111" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="212.2" cy="111" r="4" fill="#2d6a9f"/>
+<text x="220.2" y="115" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">8%</text>
 <text x="158" y="154" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">visual_centrifugal</text>
-<line x1="247.9" y1="145" x2="433.0" y2="145" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<line x1="247.6" y1="145" x2="433.1" y2="145" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
 <circle cx="262.8" cy="145" r="4" fill="#2d6a9f"/>
 <text x="270.8" y="149" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">17%</text>
 <line x1="315.2" y1="157" x2="715.4" y2="157" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
@@ -34,33 +34,33 @@
 <text x="689.8" y="161" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">91%</text>
 <text x="158" y="188" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">optic</text>
 <line x1="334.5" y1="179" x2="518.2" y2="179" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="432.2" cy="179" r="4" fill="#2d6a9f"/>
-<text x="440.2" y="183" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">47%</text>
+<circle cx="432.0" cy="179" r="4" fill="#2d6a9f"/>
+<text x="440.0" y="183" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">47%</text>
 <line x1="249.4" y1="191" x2="695.1" y2="191" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
 <circle cx="262.4" cy="191" r="4" fill="#b5562c"/>
 <text x="270.4" y="195" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">17%</text>
 <text x="158" y="222" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">visual_projection</text>
-<line x1="583.5" y1="213" x2="620.0" y2="213" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="607.3" cy="213" r="4" fill="#2d6a9f"/>
-<text x="615.3" y="217" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">78%</text>
+<line x1="583.3" y1="213" x2="620.0" y2="213" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="607.0" cy="213" r="4" fill="#2d6a9f"/>
+<text x="615.0" y="217" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">78%</text>
 <line x1="229.3" y1="225" x2="346.0" y2="225" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
 <circle cx="281.8" cy="225" r="4" fill="#b5562c"/>
 <text x="289.8" y="229" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">20%</text>
 <text x="158" y="256" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">central</text>
-<line x1="438.6" y1="247" x2="684.2" y2="247" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="648.6" cy="247" r="4" fill="#2d6a9f"/>
-<text x="656.6" y="251" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">86%</text>
+<line x1="438.5" y1="247" x2="684.5" y2="247" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="648.7" cy="247" r="4" fill="#2d6a9f"/>
+<text x="656.7" y="251" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">86%</text>
 <line x1="386.4" y1="259" x2="607.5" y2="259" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
 <circle cx="489.5" cy="259" r="4" fill="#b5562c"/>
 <text x="497.5" y="263" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">57%</text>
 <text x="158" y="290" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">endocrine</text>
-<line x1="473.8" y1="281" x2="718.6" y2="281" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="683.8" cy="281" r="4" fill="#2d6a9f"/>
-<text x="691.8" y="285" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">92%</text>
+<line x1="439.8" y1="281" x2="717.8" y2="281" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="684.2" cy="281" r="4" fill="#2d6a9f"/>
+<text x="692.2" y="285" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">92%</text>
 <text x="158" y="324" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">descending</text>
 <line x1="695.8" y1="315" x2="727.5" y2="315" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="724.1" cy="315" r="4" fill="#2d6a9f"/>
-<text x="732.1" y="319" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">99%</text>
+<circle cx="724.4" cy="315" r="4" fill="#2d6a9f"/>
+<text x="732.4" y="319" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">99%</text>
 <line x1="698.8" y1="327" x2="722.0" y2="327" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
 <circle cx="714.3" cy="327" r="4" fill="#b5562c"/>
 <text x="722.3" y="331" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">97%</text>

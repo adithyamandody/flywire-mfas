@@ -38,7 +38,7 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <p class="meta">Draft, 27 November 2026. Code and data: https://github.com/adithyamandody/flywire-mfas</p>
 <hr/>
 <h2>Abstract</h2>
-<p>A connectome is a directed, weighted graph; a brain is a device that turns sensation into action. The simplest bridge between the two is to ask for the ordering of neurons that makes the most synaptic weight point forward — the weighted minimum feedback arc set problem. We compute a high-quality solution for the FlyWire whole-brain connectome of adult <i>Drosophila</i> (136,648 neurons, 41,912,141 synapses), reaching 35,551,569 forward weight (84.824%), above the best figures we are aware of in print, and we prove by cycle packing that no ordering can exceed 87.374%, so the remaining gap is at most 2.6 points. The resulting order, built with no biological input whatsoever, places sensory neurons at the 7.9% mark and motor neurons at 99.8%, and lays the visual pathway out in its correct anatomical sequence — though we show that most of that axis is also recoverable from a single degree statistic, and scope our claims to what the optimisation adds beyond it. Feedback is not uniform: GABAergic connections run backward twice as often as cholinergic ones, and APL, the mushroom body's giant inhibitory neuron, turns 44% of its own synaptic weight around against a brain-wide 15%. We then repeat the entire procedure on the independently reconstructed hemibrain connectome of a different fly. Compared like for like — central brain against central brain — the axis, the route asymmetry, the near-absence of feedback onto output neurons, APL's rate, and every transmitter result replicate. Across the 2,831 cell types shared by the two connectomes, how much feedback a type carries correlates at Spearman ρ = 0.615, and at 0.607 after controlling for type size. A single optimisation objective, applied to wiring alone, produces an ordering that two independently reconstructed brains agree on at cell-type resolution.</p>
+<p>A connectome is a directed, weighted graph; a brain is a device that turns sensation into action. The simplest bridge between the two is to ask for the ordering of neurons that makes the most synaptic weight point forward — the weighted minimum feedback arc set problem. We compute a high-quality solution for the FlyWire whole-brain connectome of adult <i>Drosophila</i> (136,648 neurons, 41,912,141 synapses), reaching 35,551,576 forward weight (84.824%), above the best figures we are aware of in print, and we prove by cycle packing that no ordering can exceed 87.374%, so the remaining gap is at most 2.6 points. The resulting order, built with no biological input whatsoever, places sensory neurons at the 7.9% mark and motor neurons at 99.8%, and lays the visual pathway out in its correct anatomical sequence — though we show that most of that axis is also recoverable from a single degree statistic, and scope our claims to what the optimisation adds beyond it. Feedback is not uniform: GABAergic connections run backward twice as often as cholinergic ones, and APL, the mushroom body's giant inhibitory neuron, turns 44% of its own synaptic weight around against a brain-wide 15%. We then repeat the entire procedure on the independently reconstructed hemibrain connectome of a different fly. Compared like for like — central brain against central brain — the axis, the route asymmetry, the near-absence of feedback onto output neurons, APL's rate, and every transmitter result replicate. Across the 2,831 cell types shared by the two connectomes, how much feedback a type carries correlates at Spearman ρ = 0.615, and at 0.607 after controlling for type size. A single optimisation objective, applied to wiring alone, produces an ordering that two independently reconstructed brains agree on at cell-type resolution.</p>
 <hr/>
 <h2>1. Introduction</h2>
 <p>Connectomes are now large enough that the problem has shifted from obtaining them to reading them. One natural summary of a directed network is a linear order on its nodes, chosen so that as much edge weight as possible runs forward. For a brain this order is a candidate processing hierarchy: a proposal about what is upstream of what, derived from wiring alone.</p>
@@ -51,9 +51,9 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <hr/>
 <h2>2. Results</h2>
 <h3>2.1 An ordering with a certified optimality gap</h3>
-<p>Our solver reaches <b>35,551,569</b> forward weight on the FlyWire challenge graph, 84.824% of the 41,912,141 total, against the challenge's own greedy baseline of 29,023,882 (69.25%). Every number we report was re-scored by an independent implementation written for the purpose.</p>
+<p>Our solver reaches <b>35,551,576</b> forward weight on the FlyWire challenge graph, 84.824% of the 41,912,141 total, against the challenge's own greedy baseline of 29,023,882 (69.25%). Every number we report was re-scored by an independent implementation written for the purpose.</p>
 <p>Because the objective is a maximisation, a heuristic alone cannot say how much is left. We obtain an upper bound by cycle packing. In any ordering, every directed cycle contains at least one backward edge. Assign each directed cycle <i>C</i> a value <i>y</i><sub><i>C</i></sub>&nbsp;≥&nbsp;0 such that for each edge <i>e</i>, ∑<sub><i>C</i> ∋ <i>e</i></sub> <i>y</i><sub><i>C</i></sub>&nbsp;≤&nbsp;<i>w</i><sub><i>e</i></sub>. Then in <b>any</b> ordering the backward weight is at least ∑<sub><i>C</i></sub> <i>y</i><sub><i>C</i></sub>, and the forward weight is at most the total minus that sum. A greedy packing on residual capacities — all 2-cycles, then 3-cycles, then longer cycles found by bounded search — yields:</p>
-<table><thead><tr><th></th><th>FlyWire</th><th>hemibrain</th></tr></thead><tbody><tr><td>neurons</td><td>136,648</td><td>21,737</td></tr><tr><td>connections</td><td>5,657,719</td><td>1,764,123</td></tr><tr><td>total synaptic weight</td><td>41,912,141</td><td>12,542,949</td></tr><tr><td>our forward weight</td><td>35,551,569 (<b>84.824%</b>)</td><td>9,925,483 (<b>79.132%</b>)</td></tr><tr><td>weight forced backward in any ordering</td><td>5,291,688</td><td>2,377,741</td></tr><tr><td>upper bound</td><td>36,620,453 (<b>87.374%</b>)</td><td>10,165,208 (<b>81.043%</b>)</td></tr><tr><td>remaining gap</td><td><b>2.55 points</b></td><td><b>1.91 points</b></td></tr></tbody></table>
+<table><thead><tr><th></th><th>FlyWire</th><th>hemibrain</th></tr></thead><tbody><tr><td>neurons</td><td>136,648</td><td>21,737</td></tr><tr><td>connections</td><td>5,657,719</td><td>1,764,123</td></tr><tr><td>total synaptic weight</td><td>41,912,141</td><td>12,542,949</td></tr><tr><td>our forward weight</td><td>35,551,576 (<b>84.824%</b>)</td><td>9,925,483 (<b>79.132%</b>)</td></tr><tr><td>weight forced backward in any ordering</td><td>5,291,688</td><td>2,377,741</td></tr><tr><td>upper bound</td><td>36,620,453 (<b>87.374%</b>)</td><td>10,165,208 (<b>81.043%</b>)</td></tr><tr><td>remaining gap</td><td><b>2.55 points</b></td><td><b>1.91 points</b></td></tr></tbody></table>
 <p>Each packing is re-checked by a separate program that re-reads the graph, confirms every packed cycle is a genuine directed cycle, and confirms that no connection is used beyond its weight. For hemibrain this verified 669,576 cycles (264,098 of length 2, 289,939 of length 3, 115,539 longer) with zero violations.</p>
 <h3>2.2 The ordering recovers the input-to-output axis</h3>
 <p>Joining the FlyWire order to the published annotations [2] — which cover 136,635 of our 136,648 neurons — gives Figure 1 and the medians below. The search optimised a sum of edge weights and nothing else; it had no access to any of these labels.</p>
@@ -73,19 +73,19 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <text x="168" y="20" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#2d6a9f">FlyWire (136,648 neurons)</text>
 <text x="388" y="20" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#b5562c">hemibrain (21,737 neurons)</text>
 <text x="158" y="52" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">sensory_ascending</text>
-<line x1="187.2" y1="43" x2="219.4" y2="43" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="205.5" cy="43" r="4" fill="#2d6a9f"/>
-<text x="213.5" y="47" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">7%</text>
+<line x1="187.1" y1="43" x2="216.4" y2="43" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="200.6" cy="43" r="4" fill="#2d6a9f"/>
+<text x="208.6" y="47" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">6%</text>
 <text x="158" y="86" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">ascending</text>
-<line x1="188.4" y1="77" x2="224.0" y2="77" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="206.6" cy="77" r="4" fill="#2d6a9f"/>
-<text x="214.6" y="81" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">7%</text>
+<line x1="188.4" y1="77" x2="224.3" y2="77" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="207.6" cy="77" r="4" fill="#2d6a9f"/>
+<text x="215.6" y="81" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">7%</text>
 <text x="158" y="120" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">sensory</text>
-<line x1="189.2" y1="111" x2="241.2" y2="111" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="212.7" cy="111" r="4" fill="#2d6a9f"/>
-<text x="220.7" y="115" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">8%</text>
+<line x1="188.7" y1="111" x2="241.2" y2="111" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="212.2" cy="111" r="4" fill="#2d6a9f"/>
+<text x="220.2" y="115" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">8%</text>
 <text x="158" y="154" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">visual_centrifugal</text>
-<line x1="247.9" y1="145" x2="433.0" y2="145" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<line x1="247.6" y1="145" x2="433.1" y2="145" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
 <circle cx="262.8" cy="145" r="4" fill="#2d6a9f"/>
 <text x="270.8" y="149" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">17%</text>
 <line x1="315.2" y1="157" x2="715.4" y2="157" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
@@ -93,33 +93,33 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <text x="689.8" y="161" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">91%</text>
 <text x="158" y="188" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">optic</text>
 <line x1="334.5" y1="179" x2="518.2" y2="179" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="432.2" cy="179" r="4" fill="#2d6a9f"/>
-<text x="440.2" y="183" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">47%</text>
+<circle cx="432.0" cy="179" r="4" fill="#2d6a9f"/>
+<text x="440.0" y="183" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">47%</text>
 <line x1="249.4" y1="191" x2="695.1" y2="191" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
 <circle cx="262.4" cy="191" r="4" fill="#b5562c"/>
 <text x="270.4" y="195" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">17%</text>
 <text x="158" y="222" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">visual_projection</text>
-<line x1="583.5" y1="213" x2="620.0" y2="213" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="607.3" cy="213" r="4" fill="#2d6a9f"/>
-<text x="615.3" y="217" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">78%</text>
+<line x1="583.3" y1="213" x2="620.0" y2="213" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="607.0" cy="213" r="4" fill="#2d6a9f"/>
+<text x="615.0" y="217" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">78%</text>
 <line x1="229.3" y1="225" x2="346.0" y2="225" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
 <circle cx="281.8" cy="225" r="4" fill="#b5562c"/>
 <text x="289.8" y="229" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">20%</text>
 <text x="158" y="256" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">central</text>
-<line x1="438.6" y1="247" x2="684.2" y2="247" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="648.6" cy="247" r="4" fill="#2d6a9f"/>
-<text x="656.6" y="251" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">86%</text>
+<line x1="438.5" y1="247" x2="684.5" y2="247" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="648.7" cy="247" r="4" fill="#2d6a9f"/>
+<text x="656.7" y="251" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">86%</text>
 <line x1="386.4" y1="259" x2="607.5" y2="259" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
 <circle cx="489.5" cy="259" r="4" fill="#b5562c"/>
 <text x="497.5" y="263" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">57%</text>
 <text x="158" y="290" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">endocrine</text>
-<line x1="473.8" y1="281" x2="718.6" y2="281" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="683.8" cy="281" r="4" fill="#2d6a9f"/>
-<text x="691.8" y="285" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">92%</text>
+<line x1="439.8" y1="281" x2="717.8" y2="281" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
+<circle cx="684.2" cy="281" r="4" fill="#2d6a9f"/>
+<text x="692.2" y="285" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">92%</text>
 <text x="158" y="324" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">descending</text>
 <line x1="695.8" y1="315" x2="727.5" y2="315" stroke="#2d6a9f" stroke-width="3" opacity="0.45"/>
-<circle cx="724.1" cy="315" r="4" fill="#2d6a9f"/>
-<text x="732.1" y="319" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">99%</text>
+<circle cx="724.4" cy="315" r="4" fill="#2d6a9f"/>
+<text x="732.4" y="319" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">99%</text>
 <line x1="698.8" y1="327" x2="722.0" y2="327" stroke="#b5562c" stroke-width="3" opacity="0.45"/>
 <circle cx="714.3" cy="327" r="4" fill="#b5562c"/>
 <text x="722.3" y="331" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#b5562c">97%</text>
@@ -128,10 +128,10 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <circle cx="729.1" cy="349" r="4" fill="#2d6a9f"/>
 <text x="737.1" y="353" font-family="Helvetica,Arial,sans-serif" font-size="10" fill="#2d6a9f">100%</text>
 </svg><figcaption><b>Figure 1. The ordering recovers the brain's input-to-output axis.</b> Each row is an annotated class of neuron, ordered by its median position in the FlyWire ordering. The bar spans the interquartile range of the positions of that class's neurons and the dot marks the median, labelled with its value. Blue, FlyWire (136,648 neurons); orange, hemibrain (21,737). A class is drawn only where it has at least 30 neurons in that connectome. The axis is position in the ordering, 0% first to 100% last. Neither ordering was given any class label.</figcaption></figure>
-<table><thead><tr><th>super class</th><th>neurons</th><th>median position</th></tr></thead><tbody><tr><td>ascending</td><td>1,629</td><td>6.9%</td></tr><tr><td>sensory</td><td>14,827</td><td><b>7.9%</b></td></tr><tr><td>visual_centrifugal</td><td>524</td><td>16.9%</td></tr><tr><td>optic</td><td>77,509</td><td>47.0%</td></tr><tr><td>visual_projection</td><td>8,038</td><td>78.2%</td></tr><tr><td>central</td><td>32,294</td><td>85.5%</td></tr><tr><td>descending</td><td>1,276</td><td>98.9%</td></tr><tr><td>motor</td><td>109</td><td><b>99.8%</b></td></tr></tbody></table>
+<table><thead><tr><th>super class</th><th>neurons</th><th>median position</th></tr></thead><tbody><tr><td>ascending</td><td>1,629</td><td>7.1%</td></tr><tr><td>sensory</td><td>14,827</td><td><b>7.9%</b></td></tr><tr><td>visual_centrifugal</td><td>524</td><td>16.9%</td></tr><tr><td>optic</td><td>77,509</td><td>47.0%</td></tr><tr><td>visual_projection</td><td>8,038</td><td>78.1%</td></tr><tr><td>central</td><td>32,294</td><td>85.5%</td></tr><tr><td>descending</td><td>1,276</td><td>99.0%</td></tr><tr><td>motor</td><td>109</td><td><b>99.8%</b></td></tr></tbody></table>
 <p>Sensory neurons land in the first tenth of the order, motor neurons in the last fifth of a percent, and the visual pathway sits between them in its correct anatomical sequence. This is a validation rather than a discovery — the anatomy is well known — and §2.8 shows that most of it does not require the optimisation at all. What it establishes is that the ordering is not nonsense; the claims that depend on the optimisation are set out there.</p>
 <h3>2.3 Feedforward routes are nearly pure; the feedback is on the return path</h3>
-<p>15.18% of all synaptic weight (6,360,572) points backward. That weight is very unevenly distributed, and the clearest way to see it is to take each pair of classes and look at both directions between them (Figure 2). There are nine pairs of classes carrying at least 20,000 weight in both directions, and in <b>every one of them</b> one direction is far below the brain-wide rate and the other far above it:</p>
+<p>15.18% of all synaptic weight (6,360,565) points backward. That weight is very unevenly distributed, and the clearest way to see it is to take each pair of classes and look at both directions between them (Figure 2). There are nine pairs of classes carrying at least 20,000 weight in both directions, and in <b>every one of them</b> one direction is far below the brain-wide rate and the other far above it:</p>
 <figure id="fig2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 606">
 <rect width="880" height="606" fill="white"/>
 <line x1="318.0" y1="74" x2="318.0" y2="560" stroke="#d8d8d8" stroke-width="1"/>
@@ -155,15 +155,15 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <rect x="318" y="87" width="4.5" height="12" fill="#2d6a9f" opacity="0.5"/>
 <text x="328.5" y="97" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">0.8%</text>
 <text x="306" y="115" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">central → ascending</text>
-<rect x="318" y="106" width="300.7" height="12" fill="#2d6a9f" opacity="1.0"/>
-<text x="624.7" y="116" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">54.2%</text>
+<rect x="318" y="106" width="300.9" height="12" fill="#2d6a9f" opacity="1.0"/>
+<text x="624.9" y="116" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">54.2%</text>
 <line x1="18" y1="138" x2="18" y2="170" stroke="#d8d8d8" stroke-width="2"/>
 <text x="306" y="148" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">optic → visual_projection</text>
 <rect x="318" y="139" width="13.1" height="12" fill="#2d6a9f" opacity="0.5"/>
 <text x="337.1" y="149" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">2.4%</text>
 <text x="306" y="167" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">visual_projection → optic</text>
-<rect x="318" y="158" width="294.7" height="12" fill="#2d6a9f" opacity="1.0"/>
-<text x="618.7" y="168" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">53.1%</text>
+<rect x="318" y="158" width="294.6" height="12" fill="#2d6a9f" opacity="1.0"/>
+<text x="618.6" y="168" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">53.1%</text>
 <line x1="18" y1="190" x2="18" y2="222" stroke="#d8d8d8" stroke-width="2"/>
 <text x="306" y="200" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">central → descending</text>
 <rect x="318" y="191" width="15.6" height="12" fill="#2d6a9f" opacity="0.5"/>
@@ -180,8 +180,8 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <rect x="318" y="243" width="15.7" height="12" fill="#2d6a9f" opacity="0.5"/>
 <text x="339.7" y="253" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">2.8%</text>
 <text x="306" y="271" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">optic → sensory</text>
-<rect x="318" y="262" width="195.2" height="12" fill="#2d6a9f" opacity="1.0"/>
-<text x="519.2" y="272" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">35.2%</text>
+<rect x="318" y="262" width="195.0" height="12" fill="#2d6a9f" opacity="1.0"/>
+<text x="519.0" y="272" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">35.1%</text>
 <line x1="18" y1="294" x2="18" y2="326" stroke="#d8d8d8" stroke-width="2"/>
 <text x="306" y="304" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">visual_projection → central</text>
 <rect x="318" y="295" width="26.0" height="12" fill="#2d6a9f" opacity="0.5"/>
@@ -212,8 +212,8 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <rect x="318" y="451" width="37.1" height="12" fill="#2d6a9f" opacity="0.5"/>
 <text x="361.1" y="461" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">6.7%</text>
 <text x="306" y="479" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">central → sensory</text>
-<rect x="318" y="470" width="151.5" height="12" fill="#2d6a9f" opacity="1.0"/>
-<text x="475.5" y="480" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">27.3%</text>
+<rect x="318" y="470" width="151.4" height="12" fill="#2d6a9f" opacity="1.0"/>
+<text x="475.4" y="480" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">27.3%</text>
 <line x1="18" y1="502" x2="18" y2="534" stroke="#d8d8d8" stroke-width="2"/>
 <text x="306" y="512" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="end">visual_centrifugal → central</text>
 <rect x="318" y="503" width="48.1" height="12" fill="#2d6a9f" opacity="0.5"/>
@@ -239,7 +239,7 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <p>We repeated the entire pipeline on the hemibrain connectome [3]: a different animal, a different laboratory, a different reconstruction, 21,737 traced non-cropped neurons and 1,764,123 connections of at least 2 synapses. Three independent solver runs landed within 0.02 points of each other and merging them gained nothing, so the search is converged; the result is within 1.91 points of the certified ceiling (§2.1).</p>
 <p>Labels are carried from FlyWire by cell type, through the <code>hemibrain_type</code> column of the FlyWire annotations; 15,710 of 21,737 neurons (72%) could be matched. <b>The labels are borrowed; the ordering is not.</b> Cell type is conserved between individuals, while each neuron's position is decided by hemibrain's own wiring.</p>
 <p>Because the two connectomes have different brain-wide backward rates (15.18% vs 20.87%), rates are compared relative to each brain's own:</p>
-<table><thead><tr><th></th><th>FlyWire</th><th>hemibrain</th></tr></thead><tbody><tr><td>descending neurons, median position</td><td>98.9%</td><td>97.2%</td></tr><tr><td>the way in (visual_projection → central)</td><td>0.31×</td><td><b>0.30×</b></td></tr><tr><td>the way back (central → visual_projection)</td><td>3.09×</td><td>2.30×</td></tr><tr><td>feedback received by output neurons</td><td>0.20×</td><td><b>0.13×</b></td></tr><tr><td>acetylcholine</td><td>0.70×</td><td>0.83×</td></tr><tr><td>GABA</td><td>1.39×</td><td>1.20×</td></tr><tr><td>glutamate, whole brain vs central brain</td><td>1.40×</td><td>0.95×</td></tr><tr><td>glutamate, <b>central brain both sides</b></td><td><b>0.97×</b></td><td><b>0.95×</b></td></tr></tbody></table>
+<table><thead><tr><th></th><th>FlyWire</th><th>hemibrain</th></tr></thead><tbody><tr><td>descending neurons, median position</td><td>99.0%</td><td>97.2%</td></tr><tr><td>the way in (visual_projection → central)</td><td>0.31×</td><td><b>0.30×</b></td></tr><tr><td>the way back (central → visual_projection)</td><td>3.09×</td><td>2.30×</td></tr><tr><td>feedback received by output neurons</td><td>0.20×</td><td><b>0.13×</b></td></tr><tr><td>acetylcholine</td><td>0.70×</td><td>0.83×</td></tr><tr><td>GABA</td><td>1.39×</td><td>1.20×</td></tr><tr><td>glutamate, whole brain vs central brain</td><td>1.40×</td><td>0.95×</td></tr><tr><td>glutamate, <b>central brain both sides</b></td><td><b>0.97×</b></td><td><b>0.95×</b></td></tr></tbody></table>
 <p>Every pathway result and both reliable transmitter results survive. Glutamate looked like the exception and is not. An earlier version of this paper recorded it as 1.40× in FlyWire against 0.95× in hemibrain and called it a failed replication. That comparison was not like for like: every other row sets FlyWire's <b>whole</b> brain against hemibrain's <b>central</b> brain. Restricted to the central brain on both sides, FlyWire gives 0.97× against hemibrain's 0.95× — agreement, not disagreement.</p>
 <p>The 1.40× is real but regional. Within the optic lobe, glutamatergic connections run backward at 27.0% against that region's own 16.0%, a local ratio of 1.69×; within the central brain they sit at 15.8% against 16.3%. Glutamate's backward bias is an optic-lobe phenomenon, and hemibrain contains no optic lobe, so it could not have shown it either way. This also fits what is known physiologically: glutamate's inhibitory action in the fly is established in the antennal lobe through the glutamate-gated chloride channel GluClα [20], evidence from particular circuits rather than from the brain as a whole.</p>
 <p>Ranking neurons by backward weight in each brain separately:</p>
@@ -3119,7 +3119,7 @@ a { color: #1a4f7a; text-decoration: none; word-break: break-word; }
 <p>The rate is already normalised by each type's own weight, so type size cannot produce the correlation, and restricting to types whose rate is measured from a large amount of weight raises it slightly. Agreement is visible at both ends of the range: lLN1_a 44.2% vs 40.9%, APL 43.3% vs 46.4%, PVLP011 40.8% vs 41.0%, down to DNp13 at 0.3% vs 0.3% and DNES2 at 0.0% vs 0.0%.</p>
 <h3>2.8 How much of this needs the optimisation?</h3>
 <p>A near-optimal ordering is expensive to compute, so it is worth asking what of the above a cheap one would also give. Order every neuron by the share of its own synaptic weight that is outgoing — out / (in + out) — descending. That is one arithmetic operation per neuron, no search of any kind, and it scores 71.91% forward against our 84.824%. Yet:</p>
-<table><thead><tr><th>class</th><th>optimised</th><th>out-share sort</th></tr></thead><tbody><tr><td>ascending</td><td>6.9%</td><td>5.2%</td></tr><tr><td>sensory</td><td><b>7.9%</b></td><td><b>7.2%</b></td></tr><tr><td>optic</td><td>47.0%</td><td>49.3%</td></tr><tr><td>visual_projection</td><td>78.2%</td><td>79.0%</td></tr><tr><td><b>central</b></td><td><b>85.5%</b></td><td><b>60.6%</b></td></tr><tr><td>descending</td><td>98.9%</td><td>94.6%</td></tr><tr><td>motor</td><td><b>99.8%</b></td><td><b>98.7%</b></td></tr></tbody></table>
+<table><thead><tr><th>class</th><th>optimised</th><th>out-share sort</th></tr></thead><tbody><tr><td>ascending</td><td>7.1%</td><td>5.2%</td></tr><tr><td>sensory</td><td><b>7.9%</b></td><td><b>7.2%</b></td></tr><tr><td>optic</td><td>47.0%</td><td>49.3%</td></tr><tr><td>visual_projection</td><td>78.1%</td><td>79.0%</td></tr><tr><td><b>central</b></td><td><b>85.5%</b></td><td><b>60.6%</b></td></tr><tr><td>descending</td><td>99.0%</td><td>94.6%</td></tr><tr><td>motor</td><td><b>99.8%</b></td><td><b>98.7%</b></td></tr></tbody></table>
 <p>Every class lands within about two points of the optimised position except one. The cause is local and unmysterious: 5,476 of 14,827 sensory neurons have no inputs at all in this graph and 79 of 109 motor neurons have no outputs, so a statistic that reads only each neuron's own in/out balance already places the two ends of the brain correctly.</p>
 <p><b>The axis of §2.2 is therefore not evidence that the optimisation found something a simpler statistic could not.</b> What the optimisation adds is the central-brain row — placing 32,294 central neurons after the visual projection neurons that drive them, a 25-point correction — together with 13 points of objective value and the tighter rates everything downstream is measured against. Readers taking hierarchy off a connectome ordering should run this baseline; a result that the out-share sort reproduces is a result about degree, not about hierarchy.</p>
 <p>The cell-type agreement of §2.7 is the result here that has no such cheap explanation, because it compares two independently reconstructed brains rather than two orderings of one.</p>

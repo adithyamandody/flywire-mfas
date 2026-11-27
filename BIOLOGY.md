@@ -28,7 +28,7 @@ python3 -I mfas_code/biology.py mfas_data/graph.csv best_solution.csv \
         fw_annot/neuron_annotations.tsv
 ```
 
-Our ordering is `best_solution.csv` (35,551,569 forward weight, 84.82%).
+Our ordering is `best_solution.csv` (35,551,576 forward weight, 84.82%).
 Nothing biological went into producing it: the search only ever maximised
 forward synaptic weight.
 
@@ -44,13 +44,13 @@ and by super class:
 
 | super class | neurons | median position |
 |---|---|---|
-| ascending | 1,629 | 6.9% |
+| ascending | 1,629 | 7.1% |
 | sensory | 14,827 | 7.9% |
 | visual_centrifugal | 524 | 16.9% |
 | optic | 77,509 | 47.0% |
-| visual_projection | 8,038 | 78.2% |
+| visual_projection | 8,038 | 78.1% |
 | central | 32,294 | 85.5% |
-| descending | 1,276 | 98.9% |
+| descending | 1,276 | 99.0% |
 | motor | 109 | **99.8%** |
 
 Sensory neurons land in the first tenth, motor neurons in the last fifth of a
@@ -66,7 +66,7 @@ that the recovery is independent.
 
 ## 2. The forward pathway is nearly pure; the feedback is on the return path
 
-15.18% of all synaptic weight (6,360,572) points backward in our ordering.
+15.18% of all synaptic weight (6,360,565) points backward in our ordering.
 That weight is not spread evenly. Comparing each pathway's backward weight
 with its total weight:
 

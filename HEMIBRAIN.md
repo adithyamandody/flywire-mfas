@@ -32,7 +32,7 @@ shared with FlyWire except the species.
 | neurons | 136,648 | 21,737 |
 | connections | 5,657,719 | 1,764,123 |
 | total synaptic weight | 41,912,141 | 12,542,949 |
-| our forward weight | 35,551,569 | 9,925,483 |
+| our forward weight | 35,551,576 | 9,925,483 |
 | **forward share** | **84.82%** | **79.13%** |
 
 Built with `build_hemibrain.py`, keeping connections of at least 2 synapses
@@ -75,7 +75,7 @@ python3 -I mfas_code/crosscheck.py mfas_data/graph.csv best_solution.csv \
 | descending | 249 | **97.2%** |
 
 Descending neurons — the brain's output to the nerve cord — land at 97.2%,
-against 98.9% in FlyWire. Visual projection neurons, which are what carries
+against 99.0% in FlyWire. Visual projection neurons, which are what carries
 visual information *into* this volume, land early. The axis is there again.
 
 Two differences are the volume's doing, not the ordering's:
