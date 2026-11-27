@@ -72,3 +72,75 @@ Ideas this suggests:
    a random re-sort that keeps every forward edge forward, used as a kick
    that never lowers the score. After hub moves had stalled (+13 per core in
    10 minutes), whole-order shuffles gained +5,953. See the README.
+
+---
+
+# The 26 Nov entries (checked 27 Nov 2026)
+
+Both top entries were posted on 26 November: ours at 35,551,497 (first) and
+Jean-René Denoual's at 35,544,474 (second). Denoual's file was downloaded
+and scored independently: it is exactly 35,544,474, as claimed. Still no
+code, paper or method write-up from anyone in the top five.
+
+## 1. The new #2 is the old #1 with 241 added
+
+Denoual's 26 November file against Westfall's 8 November file:
+
+| | weight |
+|---|---|
+| forward in both | 35,521,224 |
+| forward only in Denoual | 23,250 |
+| forward only in Westfall | 23,009 |
+| net | **+241** |
+
+They disagree on 0.06% of the graph. The new second place is Westfall's
+ordering polished by 241 weight, which settles the question left open on
+15 November: the top of the leaderboard is one lineage, not several methods
+converging. There is no new method in this file to learn from.
+
+## 2. Ours against theirs is an even split that we win narrowly
+
+| | weight |
+|---|---|
+| forward in both | 34,733,434 |
+| forward only in ours | 818,135 |
+| forward only in theirs | 811,040 |
+| backward in both | 5,549,532 |
+| net | **+7,095** |
+
+1.63M of weight is contested and we take 50.2% of it. **They capture
+811,040 that we do not** — 1.9% of the whole graph. The same neurons head
+both win lists (Li30, Li32, APL, Am1, Sm42, LT33, LHCENT3), so the two
+searches are not disagreeing about the brain in general; they are making
+opposite choices about where to put the same few thousand optic-lobe
+interneurons, and each choice pays off somewhere.
+
+## 3. Our own search has stopped exploring
+
+All ten islands from the 19 November overnight run score 35,551,569, and
+`split.py` finds **zero** disagreeing weight between any of them and
+`best_solution.csv`. They are the same ordering. We have no second basin of
+our own to compare against.
+
+## What this is worth, and what we will not do
+
+The file is not usable and would not help if it were: it is Westfall + 241.
+The policy is unchanged — posted files are read for analysis and never used
+as a starting point, and nothing derived from one is submitted.
+
+The diagnostic is the real result, and it is a pointed one. An unrelated
+search holds 811k of weight that ours misses, while ours has collapsed to a
+single point and now gains about 15 per core per 4 minutes. Taken together
+those say the remaining headroom is in **exploration, not polish**, and that
+our island scheme defeats itself: islands that merge back together converge
+to one answer and lose the diversity that made them worth running.
+
+The experiment that follows, entirely on our own data: several runs from
+genuinely different starting layouts — different SpringRank seeds, different
+relaxation parameters, TopoShuffle-randomised starts — kept strictly apart
+with no merging, each polished independently, and compared with `split.py`.
+If two of our own runs disagree on hundreds of thousands of weight the way
+ours and theirs do, the basin is not unique and a better one may be
+reachable. If they all collapse to 35,551,569 again, the layout our pipeline
+finds is forced, and the gap to the 90.24% ceiling is not something this
+search will close.
