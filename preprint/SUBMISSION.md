@@ -65,10 +65,11 @@ whole argument is that anyone can re-run the checks.
       a preprint pointing at a 404 undercuts exactly that. These two
       decisions are now coupled.
 - [ ] Confirm the licence choice above.
-- [ ] Decide whether to wait for the challenge submission of 18 November to
-      appear on the leaderboard. The paper does not depend on it — every
-      comparison is to a specific published number, not to a leaderboard
-      position — so this is preference, not a blocker.
+- [ ] Consider re-sending the improved ordering. The submission is now
+      listed first (26 November 2026) as 35,551,497, while the paper reports
+      35,551,569; submissions are unlimited and only the best is shown, so
+      re-sending would stop a reader finding two numbers under one name. No
+      claim in the paper depends on it.
 
 ## 5. If the form asks about AI use
 

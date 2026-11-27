@@ -516,13 +516,23 @@ accountability for a scientific claim cannot be delegated to a model.
   is also the one claim in the paper a referee cannot check, so keep it
   true: if a later revision adds material you have not been through
   yourself, narrow the sentence to match before submitting.
-- **Leaderboard status.** Our 35,551,569 exceeds the figures published by
-  Bader et al. (35,459,266) and Vahidi (0.8461), and the top public
-  leaderboard entry as of November 2026 (35,544,233). The challenge closed in
-  October 2024; our submission of 35,551,497 was emailed on 18 November 2026
-  and has not yet appeared on the leaderboard. Any "state of the art" claim
-  should be phrased as a comparison to specific published numbers, as above,
-  rather than as a leaderboard position.
+- **Leaderboard status**, checked 27 November 2026. The submission emailed
+  on 18 November was posted on 26 November and now stands first:
+  *Adithya Mandody, 35,551,497 (84.824%)*. Second is a new entry of the same
+  date, Jean-René Denoual at 35,544,474 (84.807%), which displaced the
+  35,544,233 that stood when this draft was written; the margin is 7,023.
+  Our 35,551,569 also exceeds the figures published by Bader et al.
+  (35,459,266) and Vahidi (0.8461). The challenge itself closed in October
+  2024 and the board is now an open "beat the top score" list, so a "state
+  of the art" claim should still be phrased as a comparison to specific
+  published numbers rather than as a leaderboard position — a position can
+  change the week after a paper is posted, as it just did.
+- **The listed score is not our best.** The board shows 35,551,497, the
+  figure emailed on 18 November; the paper reports 35,551,569, found after
+  that email. The difference is 72 weight and no claim depends on it, but a
+  reader who checks the board against the paper will see two numbers under
+  one name. Submissions are unlimited and only the best is shown, so sending
+  the improved ordering would close that gap before the preprint goes up.
 - **Disclosure.** Now written, as Methods §5 ("Use of AI assistance") plus a
   standalone §6 declaration. That is the structure Springer Nature asks for
   — a description in Methods and an AI use declaration at the end — and it
