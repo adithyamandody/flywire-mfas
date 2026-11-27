@@ -1,5 +1,20 @@
 # Does any of it hold in a second brain?
 
+> **Correction, 27 November 2026.** The transmitter table below is
+> superseded; see `AUDIT.md` and `PAPER.md` 2.6.
+>
+> - **Glutamate does replicate.** Comparing central brain to central brain
+>   rather than whole brain to central brain, FlyWire gives 0.97x against
+>   hemibrain's 0.95x. The "does not hold" verdict was an artefact of
+>   comparing different volumes.
+> - **The serotonin and dopamine rows are not evidence.** Both are dominated
+>   by neurons the FlyWire annotations themselves measure as cholinergic, and
+>   because hemibrain's labels are transferred from FlyWire by cell type, the
+>   agreement between the two columns reproduces the error rather than
+>   testing it.
+> - The FlyWire floor quoted anywhere as 9.76% is superseded by a verified
+>   12.63%.
+
 [BIOLOGY.md](BIOLOGY.md) reports what our FlyWire ordering says about the fly
 brain. Every one of those claims comes from a single ordering of a single
 connectome. The obvious question is whether a second fly, imaged by a

@@ -1,5 +1,21 @@
 # What the ordering says about the fly brain
 
+> **Correction, 27 November 2026.** Three things below are superseded by an
+> audit; see `AUDIT.md` and `PAPER.md`.
+>
+> - **The dopamine and serotonin rows are classifier artefacts.** 5,172 of
+>   the 5,177 Kenyon cells are *predicted* dopaminergic while the annotation
+>   file's measured `known_nt` records acetylcholine for all 5,177, and they
+>   carry about three quarters of all "dopamine" weight. Serotonin fails the
+>   same way. Only acetylcholine and GABA are reliable.
+> - **Glutamate does replicate.** The apparent failure compared FlyWire's
+>   whole brain against hemibrain's central brain. Central brain on both
+>   sides gives 0.97x against 0.95x. The elevated whole-brain figure is an
+>   optic-lobe effect: 27.0% backward there against 15.8% centrally.
+> - **Most of the axis does not need the optimisation.** Sorting neurons by
+>   out / (in + out) alone reproduces every class position except the central
+>   brain's.
+
 The MFAS challenge asks for one number. But the thing we optimised is a list of
 136,648 neurons in order, and FlyWire publishes what every one of those neurons
 *is*. Joining the two turns the number into anatomy.

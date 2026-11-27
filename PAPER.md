@@ -14,23 +14,24 @@ weighted minimum feedback arc set problem. We compute a high-quality solution
 for the FlyWire whole-brain connectome of adult *Drosophila* (136,648 neurons, 41,912,141
 synapses), reaching 35,551,569 forward weight (84.824%), above the best
 figures we are aware of in print, and we prove by cycle packing that no
-ordering can exceed 90.242%, so the remaining gap is at most 5.4 points. The
+ordering can exceed 87.374%, so the remaining gap is at most 2.6 points. The
 resulting order, built with no biological input whatsoever, places sensory
 neurons at the 7.9% mark and motor neurons at 99.8%, and lays the visual
-pathway out in its correct anatomical sequence. Feedback is not uniform:
-the outbound visual route is 2.4–4.7% backward while the return routes are
-38–75% backward; connections from GABAergic, dopaminergic and serotonergic
-neurons run backward more often than cholinergic ones; and the two neurons
-carrying the most backward weight in the whole brain are APL and CT1, the
-fly's textbook giant inhibitory feedback cells. We then repeat the entire
+pathway out in its correct anatomical sequence — though we show that most of
+that axis is also recoverable from a single degree statistic, and scope our
+claims to what the optimisation adds beyond it. Feedback is not uniform:
+GABAergic connections run backward twice as often as cholinergic ones, and
+APL, the mushroom body's giant inhibitory neuron, turns 44% of its own
+synaptic weight around against a brain-wide 15%. We then repeat the entire
 procedure on the independently reconstructed hemibrain connectome of a
-different fly. The axis, the route asymmetry, the near-absence of feedback
-onto output neurons, and APL's position at the top all reappear; the
-glutamate result does not. Across the 2,831 cell types shared by the two
-connectomes, how much feedback a type carries correlates at Spearman
-ρ = 0.615 against a shuffled ceiling of 0.057. A single optimisation
-objective, applied to wiring alone, recovers a hierarchy that two brains
-agree on.
+different fly. Compared like for like — central brain against central brain —
+the axis, the route asymmetry, the near-absence of feedback onto output
+neurons, APL's rate, and every transmitter result replicate. Across the
+2,831 cell types shared by the two connectomes, how much feedback a type
+carries correlates at Spearman ρ = 0.615, and at 0.607 after controlling
+for type size. A single optimisation objective, applied to wiring alone,
+produces an ordering that two independently reconstructed brains agree on at
+cell-type resolution.
 
 ---
 
@@ -101,9 +102,9 @@ then longer cycles found by bounded search — yields:
 | connections | 5,657,719 | 1,764,123 |
 | total synaptic weight | 41,912,141 | 12,542,949 |
 | our forward weight | 35,551,569 (**84.824%**) | 9,925,483 (**79.132%**) |
-| weight forced backward in any ordering | 4,089,720 | 2,377,741 |
-| upper bound | 37,822,421 (**90.242%**) | 10,165,208 (**81.043%**) |
-| remaining gap | 5.42 points | **1.91 points** |
+| weight forced backward in any ordering | 5,291,688 | 2,377,741 |
+| upper bound | 36,620,453 (**87.374%**) | 10,165,208 (**81.043%**) |
+| remaining gap | **2.55 points** | **1.91 points** |
 
 Each packing is re-checked by a separate program that re-reads the graph,
 confirms every packed cycle is a genuine directed cycle, and confirms that no
@@ -130,9 +131,10 @@ of edge weights and nothing else; it had no access to any of these labels.
 
 Sensory neurons land in the first tenth of the order, motor neurons in the
 last fifth of a percent, and the visual pathway sits between them in its
-correct anatomical sequence. This is a validation rather than a discovery —
-the anatomy is well known — but it is an independent one, and it is the
-evidence that the order carries information beyond its objective value.
+correct anatomical sequence. This is a validation rather than a discovery — the
+anatomy is well known — and §2.8 shows that most of it does not require the
+optimisation at all. What it establishes is that the ordering is not
+nonsense; the claims that depend on the optimisation are set out there.
 
 ### 2.3 Feedforward routes are nearly pure; the feedback is on the return path
 
@@ -172,28 +174,49 @@ receives), the neurons that by definition carry signals from the central
 brain back into the optic lobe. At the other end, motor neurons receive 0.9%
 backward: by the time the brain commits to an action, the loops are behind it.
 
-### 2.4 Feedback is biased toward inhibitory and modulatory transmitters
+### 2.4 Inhibitory connections run backward about twice as often
 
 Splitting the same weight by the sending neuron's predicted transmitter [4]:
 
 | transmitter | share of weight | % of its weight backward |
 |---|---|---|
 | acetylcholine (excitatory) | 56.8% | **10.6%** |
-| dopamine | 1.3% | 17.6% |
-| GABA (inhibitory) | 24.3% | 21.1% |
+| GABA (inhibitory) | 24.3% | **21.1%** |
 | glutamate | 16.7% | 21.3% |
-| serotonin | 0.7% | **29.2%** |
 
-Cholinergic connections are the most feedforward class of connection in the
-brain; serotonergic ones the least. Section 2.6 shows that this holds for
-acetylcholine, GABA and serotonin in a second connectome but **not** for
-glutamate.
+Cholinergic connections are the most feedforward class in the brain and
+GABAergic ones run backward at roughly twice that rate. Both replicate in a
+second connectome (§2.6). Glutamate is treated separately there, because its
+elevated rate turns out to be confined to one region.
 
-### 2.5 The neurons carrying the most feedback are the ones named for it
+**Dopamine and serotonin are omitted, and should be.** They appear in the
+transmitter predictions as 1.3% and 0.7% of weight, with rates of 17.6% and
+29.2%, and an earlier version of this paper reported them. They do not
+survive inspection. Of the 5,177 Kenyon cells, 5,172 are *predicted*
+dopaminergic, while the same annotation file's measured `known_nt` column
+records acetylcholine for all 5,177; those cells carry roughly three quarters
+of everything counted as dopaminergic weight. The serotonin row is dominated
+the same way by a few dozen antennal lobe local neurons that the measured
+column also calls cholinergic. At these abundances the rows are reporting a
+known failure mode of the image-based classifier rather than a property of
+the brain, and transferring the labels to hemibrain by cell type (§2.6)
+reproduces the error rather than testing it. The acetylcholine and GABA rows
+are unaffected: they rest on 81% of all synaptic weight, where prediction and
+measurement agree.
 
-Ranking individual neurons by the backward weight they carry, the top of the
-list is APL (two copies, one per hemisphere, 55,913 and 48,211) followed by
-CT1 (42,467 and 41,217). APL broadly innervates the whole mushroom body
+### 2.5 One neuron turns around 44% of its own traffic
+
+Ranked by the **share of its own synaptic weight** the ordering has to turn
+around, against a brain-wide 15.18%, the standout is APL: 44.0% and 42.6%
+for the two copies, one per hemisphere. CT1 follows the same way at 25.7%
+and 25.0%.
+
+Rank by *absolute* backward weight instead and the same four cells lead, but
+that ranking is substantially a size ranking — CT1 and APL are the four
+largest neurons in the brain by total synaptic weight, and 64 of the top 100
+by backward weight are also in the top 100 by size. The rate is the measure
+that means something, and by it APL is exceptional (2.9× the brain) while
+CT1 is merely elevated (1.7×). APL broadly innervates the whole mushroom body
 [13]; Kenyon cells excite it and it inhibits them in return, and that
 negative feedback loop is what keeps their odour code sparse [14]. In this
 graph the loop is direct and nearly complete: 5,176 of the 5,177 Kenyon
@@ -203,9 +226,12 @@ single giant cell spanning one stratum of the medulla and one of the lobula,
 with a separate arbour terminal in each column [16] — roughly 700 of them,
 covering the whole visual field [15]. Both are GABAergic by immunostaining
 rather than by the predicted labels of §2.4 — APL by anti-GABA [13], CT1 by
-anti-GAD1 [16] — and both are standard examples of wide-field feedback. The
-ordering puts them at the top of the feedback ranking without being given
-any of this.
+anti-GAD1 [16]. APL is a textbook wide-field feedback neuron; we do not
+claim CT1 is one, and neither [15] nor [16] describes it that way — its
+characterised role is as an amacrine input to the T4/T5 motion detectors.
+What the ordering shows is that it carries an elevated share of backward
+weight, which is a statement about position in a hierarchy, not about its
+physiological role.
 
 Below them the list is local interneurons: lobula intrinsic (Li30/32/33),
 lobula plate intrinsic (LPi12/13), amacrine (Am1), serpentine medulla
@@ -239,17 +265,26 @@ vs 20.87%), rates are compared relative to each brain's own:
 | feedback received by output neurons | 0.20× | **0.13×** |
 | acetylcholine | 0.70× | 0.83× |
 | GABA | 1.39× | 1.20× |
-| serotonin | 1.92× | 1.79× |
-| dopamine | 1.16× | 1.49× |
-| glutamate | 1.40× | **0.95×** |
+| glutamate, whole brain vs central brain | 1.40× | 0.95× |
+| glutamate, **central brain both sides** | **0.97×** | **0.95×** |
 
-Four of the five transmitter results and all of the pathway results survive.
-Glutamate acts as an inhibitory transmitter in the fly antennal lobe,
-through the glutamate-gated chloride channel GluClα [20] — but that is
-evidence from one circuit, not from the brain as a whole. It is 1.40× in
-FlyWire and dead average in hemibrain; we therefore regard the "feedback is
-inhibitory" claim as supported for GABA and the modulators and unsupported
-for glutamate.
+Every pathway result and both reliable transmitter results survive.
+Glutamate looked like the exception and is not. An earlier version of this
+paper recorded it as 1.40× in FlyWire against 0.95× in hemibrain and called
+it a failed replication. That comparison was not like for like: every other
+row sets FlyWire's **whole** brain against hemibrain's **central** brain.
+Restricted to the central brain on both sides, FlyWire gives 0.97× against
+hemibrain's 0.95× — agreement, not disagreement.
+
+The 1.40× is real but regional. Within the optic lobe, glutamatergic
+connections run backward at 27.0% against that region's own 16.0%, a local
+ratio of 1.69×; within the central brain they sit at 15.8% against 16.3%.
+Glutamate's backward bias is an optic-lobe phenomenon, and hemibrain
+contains no optic lobe, so it could not have shown it either way. This also
+fits what is known physiologically: glutamate's inhibitory action in the fly
+is established in the antennal lobe through the glutamate-gated chloride
+channel GluClα [20], evidence from particular circuits rather than from the
+brain as a whole.
 
 Ranking neurons by backward weight in each brain separately:
 
@@ -292,6 +327,7 @@ around — one number per type per brain — and correlate the two lists:
 | backward **rate** (share of the type's own weight) | **0.615** |
 | backward weight (absolute) | 0.598 |
 | total weight (size control) | 0.602 |
+| **partial ρ, controlling for type size** | **0.607** |
 | shuffled control, 200 draws: largest &#124;ρ&#124; observed | 0.057 |
 | restricted to the 243 types with ≥10,000 weight in both | 0.628 |
 
@@ -300,6 +336,43 @@ produce the correlation, and restricting to types whose rate is measured from
 a large amount of weight raises it slightly. Agreement is visible at both
 ends of the range: lLN1_a 44.2% vs 40.9%, APL 43.3% vs 46.4%, PVLP011 40.8%
 vs 41.0%, down to DNp13 at 0.3% vs 0.3% and DNES2 at 0.0% vs 0.0%.
+
+### 2.8 How much of this needs the optimisation?
+
+A near-optimal ordering is expensive to compute, so it is worth asking what
+of the above a cheap one would also give. Order every neuron by the share of
+its own synaptic weight that is outgoing — out / (in + out) — descending.
+That is one arithmetic operation per neuron, no search of any kind, and it
+scores 71.91% forward against our 84.824%. Yet:
+
+| class | optimised | out-share sort |
+|---|---|---|
+| ascending | 6.9% | 5.2% |
+| sensory | **7.9%** | **7.2%** |
+| optic | 47.0% | 49.3% |
+| visual_projection | 78.2% | 79.0% |
+| **central** | **85.5%** | **60.6%** |
+| descending | 98.9% | 94.6% |
+| motor | **99.8%** | **98.7%** |
+
+Every class lands within about two points of the optimised position except
+one. The cause is local and unmysterious: 5,476 of 14,827 sensory neurons
+have no inputs at all in this graph and 79 of 109 motor neurons have no
+outputs, so a statistic that reads only each neuron's own in/out balance
+already places the two ends of the brain correctly.
+
+**The axis of §2.2 is therefore not evidence that the optimisation found
+something a simpler statistic could not.** What the optimisation adds is the
+central-brain row — placing 32,294 central neurons after the visual
+projection neurons that drive them, a 25-point correction — together with
+13 points of objective value and the tighter rates everything downstream is
+measured against. Readers taking hierarchy off a connectome ordering should
+run this baseline; a result that the out-share sort reproduces is a result
+about degree, not about hierarchy.
+
+The cell-type agreement of §2.7 is the result here that has no such cheap
+explanation, because it compares two independently reconstructed brains
+rather than two orderings of one.
 
 ---
 
@@ -315,10 +388,10 @@ prior, and that what it recovers is reproducible across animals.
 The most interesting structure is in what refuses to be ordered. Backward
 weight under an optimal ordering is a lower bound on recurrence: it is the
 part of the wiring that no hierarchy can explain away. In FlyWire at least
-9.76% of all synaptic weight must point backward in any ordering whatsoever
-(§2.1), and the ordering concentrates the realised backward weight on exactly
-the pathways and cell types that neuroscience already calls feedback. The
-method therefore behaves like a detector for recurrence, with a certificate
+12.63% of all synaptic weight must point backward in any ordering whatsoever
+(§2.1), and the ordering concentrates the realised backward weight on
+pathways and cells that neuroscience already calls feedback. The method
+therefore behaves like a detector for recurrence, with a certificate
 attached.
 
 The hemibrain result sharpens this. Its ordering reaches only 79.13% against
@@ -352,8 +425,16 @@ alongside it.
 - **Hemibrain is a cropped volume**: one hemisphere, no sensory input, no
   optic lobe. Several differences from FlyWire are attributable to this and
   are marked where we can tell.
+- **Much of the axis does not need the optimisation.** A one-line degree
+  statistic reproduces every class position except the central brain's
+  (§2.8). Claims resting on the axis alone are claims about degree.
 - **Transmitter identities are predictions** [4], not measurements, at roughly
-  94% accuracy per neuron. DPM is a case where the prediction and the
+  94% accuracy per neuron. Where a prediction is systematically wrong for a
+  large population the error does not average out: 5,172 of 5,177 Kenyon
+  cells are predicted dopaminergic against a measured acetylcholine, which is
+  why §2.4 reports only the transmitters carrying 81% of weight and drops the
+  two rare ones. Transferring labels to a second connectome by cell type
+  (§2.6) propagates such errors rather than testing them. DPM is a case where the prediction and the
   immunostaining recorded in the annotations [2] disagree: predicted
   dopaminergic, measured serotonergic and GABAergic.
 - **One position per neuron.** Each neuron is a single node here. CT1's
