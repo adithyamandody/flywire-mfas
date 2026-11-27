@@ -1,7 +1,7 @@
 # A maximally feedforward ordering of the *Drosophila* connectome recovers its processing hierarchy and replicates across two brains
 
 **Adithya Mandody**, independent researcher.
-Draft, 25 November 2026. Code and data: https://github.com/adithyamandody/flywire-mfas
+Draft, 27 November 2026. Code and data: https://github.com/adithyamandody/flywire-mfas
 
 ---
 
