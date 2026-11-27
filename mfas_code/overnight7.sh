@@ -27,9 +27,7 @@ save() {  # verify with the independent scorer, then commit and push
   sed -i '' -E "s#^\| \*\*This repo, best so far\*\*.*#| **This repo, best so far** | **$gb** | **$pct%** |#" README.md
   git add -A
   git -c user.name="adithyamandody" -c user.email="madithyam16@gmail.com" \
-    commit -q -m "$msg: $gb ($pct%)
-
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && git push -q origin master && log "saved $gb ($pct%) and pushed"
+    commit -q -m "$msg: $gb ($pct%)" && git push -q origin master && log "saved $gb ($pct%) and pushed"
 }
 round=1
 while :; do

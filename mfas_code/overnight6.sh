@@ -60,7 +60,5 @@ open(p, "w").write("\n".join(lines))
 PY
 git add -A
 git -c user.name="adithyamandody" -c user.email="madithyam16@gmail.com" \
-  commit -q -m "TopoShuffle island search: $gb ($pct%)
-
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && git push -q origin master
+  commit -q -m "TopoShuffle island search: $gb ($pct%)" && git push -q origin master
 log "DONE best=$gb ($pct%)"
