@@ -20,6 +20,10 @@ alone. What survives that control is a different result, pointing the
 opposite way. Compared against random graphs carrying its own degree sequence
 under the same solver effort, **every nervous system we measured is less
 irreducibly recurrent than chance**, by ratios of 0.64, 0.67, 0.79 and 0.90.
+Zhao and Zhou reported this direction for the 297-node *C. elegans* network
+in 2016 [16], against a weaker null; we confirm it with a degree-preserving
+null, by weight rather than arc count, with certificates, and on connectomes
+orders of magnitude larger.
 This holds although the real connectomes carry three to fifty-five times more
 weight on reciprocated connections than their nulls do — the property that
 most directly forces backward weight. Real nervous systems are therefore
@@ -37,10 +41,22 @@ neuronal workspace requires ignition sustained by long-range loops [11];
 integrated information theory makes irreducibility to independent parts
 definitional [12]. Each asserts that recurrence matters.
 
-None has been accompanied by a measurement of how much recurrence a nervous
-system has, in the sense of wiring that no hierarchy can explain away. That
-is a question about a directed graph, with an exact answer that can be
-certified, and connectomes now make it answerable.
+The measurement that bears on this has a precedent. Zhao and Zhou [16]
+computed near-minimal feedback arc sets for a set of real directed networks,
+including the 297-node *C. elegans* network available in 2016, and compared
+each against an ensemble in which arc directions were randomised. They found
+real networks markedly feedback-scarce: the worm had 70 feedback arcs where
+randomisation predicted 405, some 34 standard deviations below chance. **The
+qualitative result in §3.3 below is theirs**, and we say so.
+
+Three things have changed since. Whole-brain connectomes now exist at up to
+500 times that scale and carry synapse counts, so the question can be asked
+by weight rather than by arc count. The feedback arc set can be **bracketed
+by certificates** rather than approached heuristically, which turns "nearly
+optimal" into "provably within". And a direction-randomised ensemble is a
+weak null here, because reversing arcs destroys the degree sequence along
+with everything else; a degree-preserving null is the harder test, and the
+one we use.
 
 This paper reports that measurement in four connectomes, and the result of
 subjecting it to the obvious control. It is a companion to work on a single
@@ -125,6 +141,16 @@ survive (Figure 1):
 
 Every real nervous system is less irreducibly recurrent than random graphs
 built from its own degrees. The deficit ranges from 10% to 36%.
+
+**This direction is not new.** It is Zhao and Zhou's feedback scarcity [16],
+found in 2016 on the *C. elegans* network of the day. What is new is how
+hard the test is. Their null randomised arc directions, which destroys the
+degree sequence; ours preserves every node's in-degree, out-degree and
+out-strength, so each null graph is a close relative of the real one. Their
+effect is correspondingly larger — 70 feedback arcs against 405 — and ours
+smaller but much harder to explain away. We also measure weight rather than
+arc count, and the result holds on three connectomes that did not exist when
+they wrote.
 
 ### 3.4 And it holds against the reciprocity they carry
 
@@ -211,8 +237,9 @@ optimisation found something a simpler statistic could not.
 ## 5. What this does and does not say about consciousness
 
 It supplies the theories of §1 with a quantity whose importance they assert
-and nobody had measured: how much of a nervous system's connectivity is
-irreducible to any hierarchy, with a certificate, at whole-organism scale.
+but which has been measured only once before, on a 297-node network with a
+weaker null and without certificates [16]: how much of a nervous system's
+connectivity is irreducible to any hierarchy, at whole-organism scale.
 
 The direction of the result is worth stating carefully, because it is not the
 one we expected. These nervous systems are not unusually recurrent for their
@@ -297,6 +324,7 @@ claim cannot be delegated to a model.
 13. MICrONS Consortium. Functional connectomics spanning multiple areas of mouse visual cortex. *Nature* **640**(8058), 435–447 (2025).
 14. Mandody A. A maximally feedforward ordering of the *Drosophila* connectome recovers its processing hierarchy and replicates across two brains (companion manuscript, 2026).
 15. FlyWire Connectome MFAS Challenge. https://codex.flywire.ai/app/mfas_challenge?dataset=fafb
+16. Zhao J-H, Zhou H-J. Feedback arcs and node hierarchy in directed networks. *Chinese Physics B* **26**(7), 078901 (2017). arXiv:1612.05347.
 
 ---
 
@@ -311,10 +339,15 @@ claim cannot be delegated to a model.
 - **Only the worm comparison is proved.** §3.5 says so. If a referee presses
   on the other three, the answer is more solver budget on the nulls, not a
   stronger claim.
-- **Priority.** "Nobody had measured this" needs a literature check before
-  submission. arXiv:1612.05347 reportedly ran feedback-arc minimisation on
-  the 297-node worm network; find it, read it, cite it if it is what it
-  sounds like.
+- **Priority: checked, and it bit.** Zhao & Zhou 2017 [16] ran near-minimal
+  feedback arc sets on real directed networks including the 297-node worm,
+  compared them against direction-randomised ensembles, and reported exactly
+  the feedback-scarcity direction this paper found. The novelty claim is
+  narrowed accordingly in the abstract, §1, §3.3 and §5: what is ours is the
+  certificate, the weighting, the degree-preserving null and the scale — not
+  the direction of the effect. Their worm network is also the merged
+  gap-junction dataset this paper rejects in Methods, which is worth a
+  sentence if a referee raises it.
 - **Carried from the audit, still to verify:** the glutamate region confound,
   and the claim that the companion paper's top-feedback ranking is really a
   size ranking. Both affect [14], not this paper.

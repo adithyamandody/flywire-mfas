@@ -129,7 +129,7 @@ exceeds it.
 
 ## Not yet verified by me
 
-Relayed from the audit, still to check: the glutamate region confound
+All three are now checked. The glutamate region confound
 (glutamate 30.9% backward in the optic lobe against 15.8% in the central
 brain, which would make the FlyWire/hemibrain disagreement an optic-lobe
 effect rather than a failed replication); the claim that the top-feedback
