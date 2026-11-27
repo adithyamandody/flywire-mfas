@@ -100,10 +100,14 @@ weight that the global hierarchy has to turn around.
 
 ## Irreducible recurrence across three connectomes
 
-| connectome | neurons | certified floor | our ordering | gap |
+Irreducible recurrence is bounded on both sides: from below by the cycle
+packing, and from above by any ordering we can exhibit, since an achievable
+backward rate proves the minimum is no larger.
+
+| connectome | neurons | floor (certified) | ceiling (exhibited) | width |
 |---|---|---|---|---|
-| larva, whole brain | 2,923 | **11.79%** | 13.11% | 1.32 |
-| adult central brain (hemibrain) | 21,737 | **18.96%** | 20.87% | 1.91 |
+| larva, whole brain | 2,923 | **11.79%** | **13.11%** | 1.31 |
+| adult central brain (hemibrain) | 21,737 | **18.96%** | **20.87%** | 1.91 |
 | adult whole brain (FlyWire) | 136,648 | 9.76% | 15.18% | 5.42 |
 
 The floors are not equally sharp. The larval and hemibrain bounds are tight
@@ -113,12 +117,18 @@ FlyWire bound is loose at 5.42 points, so its true floor is somewhere above
 that would make this table say something firm.**
 
 The controlled comparison is between the two volumes that both exclude
-optic lobes: the whole larval brain at 11.79% and the adult central brain
-at 18.96%. The adult is about seven times larger and roughly 1.6 times more
-irreducibly recurrent. That is one comparison, on two brains of one species,
-and it is nowhere near enough to claim a trend — but it is the first time
-the question has been asked with certificates on both sides, and it points
-the same way the hypothesis does.
+optic lobes: the whole larval brain and the adult central brain. **Their
+intervals do not overlap** — the adult's floor of 18.96% is above the
+larva's ceiling of 13.11% — so the adult central brain is more irreducibly
+recurrent than the entire larval brain, and that conclusion holds whatever
+the truth turns out to be inside each interval. The adult volume is about
+seven times larger. That is one comparison on two brains of one species,
+nowhere near enough to claim a trend, but it is the first time the question
+has been asked with certificates on both sides, and it survives being
+stated as conservatively as the evidence allows.
+
+See `BOUND.md` for why the FlyWire interval is the wide one and what it
+would take to narrow it.
 
 Next points on the curve: *C. elegans* (302 neurons, a different phylum) and
 MICrONS mouse visual cortex (~75,000 neurons, mammalian).
