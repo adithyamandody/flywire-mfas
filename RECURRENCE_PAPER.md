@@ -67,7 +67,8 @@ connectome [14], which established the ordering method on the adult
 
 Given a weighted directed graph and an ordering of its nodes, the backward
 weight is the total on edges pointing against the order. Minimising it is the
-weighted minimum feedback arc set problem, which is NP-hard [7]. We do not
+weighted minimum feedback arc set problem, which is NP-hard [7] and normally
+approached by greedy heuristics in the lineage of Eades et al. [8]. We do not
 solve it; we bracket it.
 
 **Floor.** Assign each directed cycle a value so that the cycles through any
@@ -187,7 +188,9 @@ on a graph with few 2-cycles.
 
 ### 3.6 The orderings recover each animal's axis
 
-Computed from wiring alone, no labels supplied. Median positions:
+Computed from wiring alone; the class labels used to read the result off are
+published annotations [2,5] and were never available to the solver. Median
+positions:
 
 | | first | middle | last |
 |---|---|---|---|
