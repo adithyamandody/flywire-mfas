@@ -46,7 +46,10 @@ for i,d in enumerate(rows):
     s.append(f'<text x="{x(d["real"])+6:.1f}" y="{y-4:.0f}" {F} font-size="11" fill="{REAL}">{d["real"]:.2f}%</text>')
     s.append(f'<rect x="{x(0):.1f}" y="{y+4}" width="{x(d["nm"])-x(0):.1f}" height="12" fill="{NULL}" opacity="0.45"/>')
     s.append(f'<line x1="{x(d["lo"]):.1f}" y1="{y+10}" x2="{x(d["hi"]):.1f}" y2="{y+10}" stroke="{NULL}" stroke-width="2"/>')
-    s.append(f'<text x="{x(d["nm"])+6:.1f}" y="{y+14:.0f}" {F} font-size="11" fill="{NULL}">{d["nm"]:.2f}%</text>')
+    # the whisker can run past the bar end, so clear both or the label
+    # sits under the line and a 5 reads as a 6
+    nlabx = max(x(d["nm"]), x(d["hi"])) + 7
+    s.append(f'<text x="{nlabx:.1f}" y="{y+14:.0f}" {F} font-size="11" fill="{NULL}">{d["nm"]:.2f}%</text>')
     rat=d["real"]/d["nm"]
     tag=f'{rat:.2f}×' + ("  proved" if d["proved"] else "")
     s.append(f'<text x="{R+26}" y="{y+5:.0f}" {F} font-size="12" font-weight="bold" fill="{INK}">{tag}</text>')

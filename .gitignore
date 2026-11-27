@@ -33,3 +33,5 @@ mfas_code/bound3c
 fw_annot/
 data_larva/
 data_worm/
+preprint/*.pdf
+preprint2/*.pdf
