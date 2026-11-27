@@ -320,22 +320,3 @@ curl -L -o graph.csv.gz "https://codex.flywire.ai/app/mfas_challenge?download=co
 curl -L -o benchmark.csv.gz "https://codex.flywire.ai/app/mfas_challenge?download=benchmark"
 gunzip graph.csv.gz benchmark.csv.gz
 ```
-
-## How this was made
-
-This work was carried out with Claude (Anthropic), used as a research tool
-and not only for writing: the solver, the cycle-packing bound, every
-analysis script here and the paper draft were written by it, and several of
-the analyses were its proposals. Adithya Mandody set the direction, decided
-what to pursue, ran the scorer and the bound verifier, read the code and the
-cited sources, checked the figures against the data, and is responsible for
-the result.
-
-The claims are built not to depend on that. `score.py` re-reads the graph
-and an ordering from disk and recomputes the score with no code shared with
-the solver; `check_bound.py` re-reads the graph and every cycle in a packing
-and checks the capacity constraint connection by connection. Both are pure
-stdlib, both run on the public data in minutes, and a bound that could not
-be re-verified this way was discarded rather than reported. The biology
-rests on published annotations joined by identifier, and the main results
-replicate in a second, independently collected connectome.
