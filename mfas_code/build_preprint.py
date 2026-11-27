@@ -16,6 +16,7 @@ import re
 import sys
 
 src_path, fig_dir, out_dir = sys.argv[1], sys.argv[2], sys.argv[3]
+manifest = sys.argv[4] if len(sys.argv) > 4 else None
 
 # ----------------------------------------------------------------- math ----
 # Every math span in the paper, mapped by hand. A span that is not in this
@@ -71,6 +72,18 @@ FIGURES = {
         "hemibrain volume; the excluded routes are defined by optic-lobe partners, "
         "which hemibrain does not contain."),
 }
+
+# A different paper supplies its own figures through a manifest:
+# one row per figure, "number<TAB>file<TAB>caption". Without one the map
+# above is used, which belongs to the first paper.
+if manifest:
+    import csv as _csv
+    FIGURES = {}
+    with open(manifest, newline="", encoding="utf-8") as _f:
+        _r = _csv.reader(_f, delimiter="\t")
+        next(_r)
+        for _num, _file, _cap in _r:
+            FIGURES[int(_num)] = (_file, _cap)
 
 # ------------------------------------------------------------ conversion ---
 ENTITY = re.compile(r"&(#\d+|#x[0-9a-fA-F]+|[a-zA-Z]+);")
@@ -158,6 +171,11 @@ def convert(md):
             lvl = len(m.group(1))
             html.append("<h%d>%s</h%d>" % (lvl, inline(m.group(2)), lvl))
             continue
+        if lines[0].lstrip().startswith("```"):
+            body_lines = [ln for ln in lines
+                          if not ln.lstrip().startswith("```")]
+            html.append("<pre>%s</pre>" % esc("\n".join(body_lines)))
+            continue
         if lines[0].lstrip().startswith("|"):
             html.append(table(lines))
             continue
@@ -194,17 +212,20 @@ def convert(md):
         para = inline(" ".join(ln.strip() for ln in lines))
         html.append("<p>%s</p>" % para)
         # drop each figure in after the paragraph that first calls for it
-        for n in (1, 2, 3):
+        for n in sorted(FIGURES):
             if n not in placed and re.search(r"Figure %d\b" % n, b):
                 html.append(figure_block(n))
                 placed.add(n)
-    missing = {1, 2, 3} - placed
+    missing = set(FIGURES) - placed
     if missing:
         raise SystemExit("figures never placed: %s" % sorted(missing))
     return "\n".join(html)
 
 
 CSS = """
+pre { font: 9.5pt/1.45 'SF Mono', Menlo, Consolas, monospace;
+      background: #f6f6f4; padding: .7em .9em; border-radius: 3px;
+      overflow-x: auto; break-inside: avoid; margin: 1em 0 1.2em; }
 @page { size: letter; margin: 18mm 17mm; }
 html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 body { font: 10.5pt/1.5 Georgia, 'Times New Roman', serif; color: #111;
