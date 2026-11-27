@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="835" height="406" viewBox="0 0 835 406">
+<rect width="835" height="406" fill="white"/>
+<text x="24" y="30" font-family="Helvetica,Arial,sans-serif" font-size="15" font-weight="bold" fill="#1b1b1b">Every nervous system is less recurrent than its own degree sequence allows</text>
+<text x="24" y="50" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#8a8a8a">Share of synaptic weight that must point backward, real brain against degree-matched random graphs at equal solver effort.</text>
+<rect x="210" y="62" width="13" height="9" fill="#2d6a9f"/>
+<text x="229" y="70" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#1b1b1b">real connectome</text>
+<rect x="332" y="62" width="13" height="9" fill="#b5562c" opacity="0.45"/>
+<text x="351" y="70" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#1b1b1b">degree-matched null</text>
+<line x1="210.0" y1="74" x2="210.0" y2="356" stroke="#d8d8d8" stroke-width="1"/>
+<text x="210.0" y="374" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#8a8a8a" text-anchor="middle">0%</text>
+<line x1="304.2" y1="74" x2="304.2" y2="356" stroke="#d8d8d8" stroke-width="1"/>
+<text x="304.2" y="374" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#8a8a8a" text-anchor="middle">5%</text>
+<line x1="398.5" y1="74" x2="398.5" y2="356" stroke="#d8d8d8" stroke-width="1"/>
+<text x="398.5" y="374" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#8a8a8a" text-anchor="middle">10%</text>
+<line x1="492.7" y1="74" x2="492.7" y2="356" stroke="#d8d8d8" stroke-width="1"/>
+<text x="492.7" y="374" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#8a8a8a" text-anchor="middle">15%</text>
+<line x1="586.9" y1="74" x2="586.9" y2="356" stroke="#d8d8d8" stroke-width="1"/>
+<text x="586.9" y="374" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#8a8a8a" text-anchor="middle">20%</text>
+<line x1="681.2" y1="74" x2="681.2" y2="356" stroke="#d8d8d8" stroke-width="1"/>
+<text x="681.2" y="374" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#8a8a8a" text-anchor="middle">25%</text>
+<text x="455" y="394" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1b1b1b" text-anchor="middle">irreducible recurrence</text>
+<text x="198" y="94" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1b1b1b" text-anchor="end">C. elegans</text>
+<text x="198" y="110" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#8a8a8a" text-anchor="end">4.4 conns/cell</text>
+<rect x="210.0" y="78" width="71.8" height="12" fill="#2d6a9f"/>
+<text x="287.8" y="88" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">3.81%</text>
+<rect x="210.0" y="96" width="111.8" height="12" fill="#b5562c" opacity="0.45"/>
+<line x1="315.0" y1="102" x2="328.9" y2="102" stroke="#b5562c" stroke-width="2"/>
+<text x="327.8" y="106" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#b5562c">5.93%</text>
+<text x="726" y="97" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#1b1b1b">0.64×  proved</text>
+<text x="198" y="156" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1b1b1b" text-anchor="end">D. larva brain</text>
+<text x="198" y="172" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#8a8a8a" text-anchor="end">20.0 conns/cell</text>
+<rect x="210.0" y="140" width="246.1" height="12" fill="#2d6a9f"/>
+<text x="462.1" y="150" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">13.06%</text>
+<rect x="210.0" y="158" width="366.2" height="12" fill="#b5562c" opacity="0.45"/>
+<line x1="574.9" y1="164" x2="577.9" y2="164" stroke="#b5562c" stroke-width="2"/>
+<text x="582.2" y="168" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#b5562c">19.43%</text>
+<text x="726" y="159" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#1b1b1b">0.67×</text>
+<text x="198" y="218" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1b1b1b" text-anchor="end">D. adult whole brain</text>
+<text x="198" y="234" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#8a8a8a" text-anchor="end">41.4 conns/cell</text>
+<rect x="210.0" y="202" width="291.4" height="12" fill="#2d6a9f"/>
+<text x="507.4" y="212" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">15.46%</text>
+<rect x="210.0" y="220" width="370.1" height="12" fill="#b5562c" opacity="0.45"/>
+<line x1="579.9" y1="226" x2="580.1" y2="226" stroke="#b5562c" stroke-width="2"/>
+<text x="586.1" y="230" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#b5562c">19.64%</text>
+<text x="726" y="221" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#1b1b1b">0.79×</text>
+<text x="198" y="280" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1b1b1b" text-anchor="end">D. adult central brain</text>
+<text x="198" y="296" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#8a8a8a" text-anchor="end">81.2 conns/cell</text>
+<rect x="210.0" y="264" width="392.8" height="12" fill="#2d6a9f"/>
+<text x="608.8" y="274" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#2d6a9f">20.84%</text>
+<rect x="210.0" y="282" width="435.3" height="12" fill="#b5562c" opacity="0.45"/>
+<line x1="644.4" y1="288" x2="646.7" y2="288" stroke="#b5562c" stroke-width="2"/>
+<text x="651.3" y="292" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#b5562c">23.10%</text>
+<text x="726" y="283" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#1b1b1b">0.90×</text>
+</svg>

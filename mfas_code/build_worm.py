@@ -59,16 +59,26 @@ with open(out_graph, "w", newline="") as f:
 
 
 def role(t, cl):
-    s = (t + " " + cl).lower()
-    if "muscle" in s:
-        return "muscle"
+    """Coarse role from the cell-info Type field.
+
+    Only the Type field decides. An earlier version also searched the
+    Classification field and tested "muscle" before "motor neuron", so
+    every cell classified "innervates dorsal muscles" -- 74 ventral cord
+    motor neurons -- came out labelled muscle. Order matters here, and so
+    does not matching against free text about a cell's targets.
+    """
+    s = t.lower()
     if "motor neuron" in s:
         return "motor"
+    if "muscle" in s:
+        return "muscle"
     if "interneuron" in s:
         return "interneuron"
     if ("sensory" in s or "amphid" in s or "cephalic" in s
             or "mechanosens" in s or "chemosens" in s or "phasmid" in s):
         return "sensory"
+    if not s and cl:
+        return role(cl, "")
     return "other"
 
 
