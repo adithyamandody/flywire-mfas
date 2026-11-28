@@ -234,15 +234,18 @@ what is left.
 | reciprocal pairs only (`bound2.py`) | 2,815,303 | 39,096,838 | 93.283% |
 | + all 3-cycles | 4,600,109 | 37,312,032 | 89.024% |
 | + longer cycles (best run) | 4,697,043 | 37,215,098 | 88.793% |
-| **verified packing** (995,074 cycles) | **4,089,720** | **37,822,421** | **90.242%** |
+| verified packing, time-truncated run | 4,089,720 | 37,822,421 | 90.242% |
+| **verified packing, complete run** (1,513,396 cycles) | **5,291,688** | **36,620,453** | **87.374%** |
 
 `check_bound.py` re-reads the graph and the dumped packing and checks every
 line is a real directed cycle and that no connection is over-used — so the
-90.242% row is proved from the graph file alone, not from trusting `bound3.c`.
+87.374% row is proved from the graph file alone, not from trusting `bound3.c`.
+The 90.242% row came from a run whose 3-cycle sweep hit its time limit after
+108,374 of 136,648 nodes; the complete run is 2.87 points better.
 The 88.793% run was faster because it did not dump its cycles; re-running it
 with the dump is what it takes to verify that row too.
 
-So the answer lies in **84.82% – 90.24%**, down from a 93.28% ceiling: the
+So the answer lies in **84.82% – 87.37%**, down from a 93.28% ceiling: the
 window on what any ordering could achieve is about a third narrower than the
 reciprocal-pair bound makes it look.
 

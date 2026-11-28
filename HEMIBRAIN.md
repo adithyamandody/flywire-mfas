@@ -218,7 +218,7 @@ that no connection is over-used, and arrives at the same figure.
 
 | | our ordering | proved ceiling | gap |
 |---|---|---|---|
-| FlyWire | 84.824% | 90.242% | 5.42 points |
+| FlyWire | 84.824% | 87.374% | 2.55 points |
 | hemibrain | **79.132%** | **81.043%** | **1.91 points** |
 
 So hemibrain's lower feedforward share is not our search falling short. Its

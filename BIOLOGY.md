@@ -202,7 +202,7 @@ See [HEMIBRAIN.md](HEMIBRAIN.md).
   position is soft. The class-level patterns above involve thousands of
   neurons each and are not sensitive to that.
 - **"Backward" means backward in this ordering.** Some backward weight is
-  unavoidable — our cycle-packing bound proves at least 9.76% of all weight
+  unavoidable — our cycle-packing bound proves at least 12.63% of all weight
   must point backward in *any* ordering (see the README) — but which specific
   edges get turned around depends on the ordering chosen.
 - These are correlations in one connectome, from one female fly. They say what

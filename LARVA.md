@@ -108,13 +108,13 @@ backward rate proves the minimum is no larger.
 |---|---|---|---|---|
 | larva, whole brain | 2,923 | **11.79%** | **13.11%** | 1.31 |
 | adult central brain (hemibrain) | 21,737 | **18.96%** | **20.87%** | 1.91 |
-| adult whole brain (FlyWire) | 136,648 | 9.76% | 15.18% | 5.42 |
+| adult whole brain (FlyWire) | 136,648 | 12.63% | 15.18% | 2.55 |
 
 The floors are not equally sharp. The larval and hemibrain bounds are tight
 — 1.3 and 1.9 points — so those floors are close to the real thing. The
 FlyWire bound is loose at 5.42 points, so its true floor is somewhere above
-9.76% and we do not yet know where. **Tightening it is the single thing
-that would make this table say something firm.**
+12.63% after the bound was recomputed without a time limit — the figure of
+9.76% that stood when this was written came from a truncated run.
 
 The controlled comparison is between the two volumes that both exclude
 optic lobes: the whole larval brain and the adult central brain. **Their

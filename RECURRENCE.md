@@ -32,7 +32,7 @@ All at the same ≥2-synapse threshold used by the FlyWire challenge graph.
 | *C. elegans*, whole | 297 | **3.81%** | **3.81%** | **0.00** |
 | *Drosophila* larva, whole brain | 2,923 | 11.79% | 13.11% | 1.31 |
 | *Drosophila* adult, central brain | 21,737 | 18.96% | 20.87% | 1.91 |
-| *Drosophila* adult, whole brain | 136,648 | 9.76% | 15.18% | 5.42 |
+| *Drosophila* adult, whole brain | 136,648 | 12.63% | 15.18% | 2.55 |
 
 **The worm is solved, not bounded.** Its packing forces exactly 262 units
 backward and our ordering achieves exactly 262. The interval has zero width:
@@ -55,7 +55,7 @@ A 73-fold range in cell count, two phyla, three independent reconstructions
 by three laboratories, and a fivefold increase in the fraction of wiring
 that no hierarchy can account for.
 
-The adult **whole** brain sits apart at 9.76–15.18%, below the central brain
+The adult **whole** brain sits apart at 12.63–15.18%, below the central brain
 it contains. That is not a contradiction: the whole-brain figure includes
 the optic lobes, which are large, highly feedforward, and dilute the rate.
 We found the same thing when hemibrain's rates were compared with FlyWire's.

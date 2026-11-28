@@ -1,5 +1,17 @@
 # Can the bound be tightened? (27 November 2026)
 
+> **Correction, 28 November 2026. The conclusion below is wrong, and the
+> way it was wrong is the point.** This document argued that the 5.42-point
+> FlyWire gap was the relaxation rather than our implementation, on the
+> strength of a 0.031-point experiment. It was our implementation: the
+> packing behind the 90.242% ceiling came from a run whose 3-cycle sweep hit
+> its time limit after 108,374 of 136,648 nodes. A complete run packs
+> 5,291,688 units — verified at 1,513,396 cycles with no over-used
+> connection — giving a floor of 12.63% and a ceiling of 87.374%. The gap
+> is 2.55 points, not 5.42, and 2.87 of the "irreducible" gap was simply a
+> timeout. The finding below about exact local solves still stands; the
+> inference drawn from it does not.
+
 The FlyWire gap — 84.824% achieved against a 90.242% ceiling — is the
 largest open number in this work, and the cross-species recurrence
 comparison is only as good as it. This asks whether the gap is our search
@@ -66,7 +78,7 @@ exhibit, because an achievable backward rate proves the minimum is no larger.
 |---|---|---|---|
 | larva, whole brain | 11.79% | 13.11% | **1.31** |
 | adult central brain (hemibrain) | 18.96% | 20.87% | **1.91** |
-| adult whole brain (FlyWire) | 9.76% | 15.18% | 5.42 |
+| adult whole brain (FlyWire) | 12.63% | 15.18% | 2.55 |
 
 Stated this way, two of the three are already tight, and the comparative
 claim survives: the adult central brain's irreducible recurrence is at least
