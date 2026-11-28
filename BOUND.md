@@ -11,6 +11,10 @@
 > is 2.55 points, not 5.42, and 2.87 of the "irreducible" gap was simply a
 > timeout. The finding below about exact local solves still stands; the
 > inference drawn from it does not.
+>
+> *The original text follows unchanged, including its now-superseded
+> numbers. It is kept because the experiment it reports is sound and
+> the inference it drew is the instructive part.*
 
 The FlyWire gap — 84.824% achieved against a 90.242% ceiling — is the
 largest open number in this work, and the cross-species recurrence
